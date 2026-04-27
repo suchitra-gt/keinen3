@@ -104,22 +104,35 @@
         </div>
     </section>
 
-    <section class="section-padding">
+    <section class="section-padding" id="about">
         <div class="container">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
                 <div class="hidden">
-                    <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem;">Empowering the <span style="color: var(--primary-red);">Modern</span> Enterprise</h2>
-                    <p style="margin-bottom: 1.5rem;">Keinen Corp partners with industry leaders to navigate the complexities of digital transformation. We bridge the gap between legacy infrastructure and futuristic technology.</p>
-                    <a href="about.html" class="btn" style="border: 1px solid var(--primary-red); color: var(--primary-red);">Learn More About Us</a>
+                    <h4 style="color: var(--primary-red); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem;">Who We Are</h4>
+                    <h2 style="font-size: 3rem; margin-bottom: 1.5rem; line-height: 1.2;">Architects of the <span style="color: var(--primary-red);">Next</span> Era</h2>
+                    <p style="font-size: 1.1rem; margin-bottom: 2rem;">Keinen Corp is a leading technology consultancy focused on building integrated IT, OT, and security ecosystems. We don't just connect businesses; we make them intelligent.</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                        <div>
+                            <h3 style="color: var(--primary-red); font-size: 2.5rem;">150+</h3>
+                            <p style="font-weight: 600;">Global Projects</p>
+                        </div>
+                        <div>
+                            <h3 style="color: var(--primary-red); font-size: 2.5rem;">24/7</h3>
+                            <p style="font-weight: 600;">Managed Support</p>
+                        </div>
+                    </div>
+                    <div style="margin-top: 40px;">
+                        <a href="about.html" class="btn btn-red">Our Full Story &rarr;</a>
+                    </div>
                 </div>
                 <div class="hidden">
-                    <img src="media__1777267801729.png" alt="Innovation" style="width: 100%; border-radius: 8px;">
+                    <img src="about_tech_architects_red_1777267955851.png" alt="Tech Architects" style="width: 100%; border-radius: 12px; box-shadow: 0 30px 60px rgba(0,0,0,0.1);">
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="section-padding" style="background: var(--bg-gray);">
+    <section class="section-padding" style="background: var(--bg-gray);" id="solutions">
         <div class="container">
             <div style="text-align: center; margin-bottom: 50px;" class="hidden">
                 <h2 style="font-size: 2.5rem;">Core <span style="color: var(--primary-red);">Solutions</span></h2>
@@ -144,14 +157,20 @@
                     <p>Modernizing legacy systems and reimagining processes for agility.</p>
                     <div class="pillar-tags"><span class="pillar-tag">Cloud-Native</span> <span class="pillar-tag">DevOps</span></div>
                 </div>
+                <div class="pillar-card hidden" onclick="showServiceModal('enterprise')">
+                    <div class="pillar-num">04</div>
+                    <h3 style="color: var(--primary-red);">Enterprise Apps</h3>
+                    <p>Optimizing the operational backbone of your business through ERP and CRM.</p>
+                    <div class="pillar-tags"><span class="pillar-tag">SAP/Oracle</span> <span class="pillar-tag">Salesforce</span></div>
+                </div>
             </div>
             <div style="text-align: center; margin-top: 40px;">
-                <a href="solutions.html" class="btn btn-red">View All Solutions</a>
+                <a href="solutions.html" class="btn btn-red">Explore All Solutions</a>
             </div>
         </div>
     </section>
 
-    <section class="section-padding">
+    <section class="section-padding" id="industries">
         <div class="container">
             <div style="text-align: center; margin-bottom: 60px;" class="hidden">
                 <h2 style="font-size: 2.5rem;">Sectors We <span style="color: var(--primary-red);">Transform</span></h2>
@@ -172,38 +191,78 @@
                     <h3>Pharmaceuticals</h3>
                     <p>21 CFR Part 11 compliant data systems and GAMP 5 validation.</p>
                 </div>
+                <div class="sector-card hidden">
+                    <img src="sector_cybersecurity_red_1777267513899.png" alt="Financial Services">
+                    <h3>Banking & Finance</h3>
+                    <p>Securing the backbone of the global digital economy.</p>
+                </div>
             </div>
             <div style="text-align: center; margin-top: 40px;">
-                <a href="industries.html" class="btn" style="border: 1px solid var(--primary-red); color: var(--primary-red);">Explore All Industries</a>
+                <a href="industries.html" class="btn" style="border: 1px solid var(--primary-red); color: var(--primary-red);">See All Industries</a>
             </div>
         </div>
     </section>
 
-    <section class="section-padding" style="background: #111; color: white;">
+    <section class="section-padding" style="background: #111; color: white;" id="why-us">
         <div class="container">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
                 <div class="hidden">
                     <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem;">Why <span style="color: var(--primary-red);">Keinen</span>?</h2>
                     <ul style="list-style: none;">
-                        <li style="margin-bottom: 20px; display: flex; gap: 15px;">
-                            <i class="fas fa-check-circle" style="color: var(--primary-red); margin-top: 5px;"></i>
+                        <li style="margin-bottom: 25px; display: flex; gap: 15px;">
+                            <i class="fas fa-check-circle" style="color: var(--primary-red); font-size: 1.5rem;"></i>
                             <div>
                                 <h4 style="margin-bottom: 5px;">End-to-End Capability</h4>
-                                <p style="color: #999;">From strategy to 24/7 managed operations.</p>
+                                <p style="color: #999;">From strategic roadmaps to 24/7 managed operations.</p>
                             </div>
                         </li>
-                        <li style="margin-bottom: 20px; display: flex; gap: 15px;">
-                            <i class="fas fa-check-circle" style="color: var(--primary-red); margin-top: 5px;"></i>
+                        <li style="margin-bottom: 25px; display: flex; gap: 15px;">
+                            <i class="fas fa-check-circle" style="color: var(--primary-red); font-size: 1.5rem;"></i>
                             <div>
                                 <h4 style="margin-bottom: 5px;">Domain Specific Depth</h4>
-                                <p style="color: #999;">Architects who understand your industry.</p>
+                                <p style="color: #999;">Architects who understand your industry's specific pressures.</p>
+                            </div>
+                        </li>
+                        <li style="margin-bottom: 25px; display: flex; gap: 15px;">
+                            <i class="fas fa-check-circle" style="color: var(--primary-red); font-size: 1.5rem;"></i>
+                            <div>
+                                <h4 style="margin-bottom: 5px;">Vendor Agnostic Approach</h4>
+                                <p style="color: #999;">We recommend what works for you, not a specific technology vendor.</p>
                             </div>
                         </li>
                     </ul>
-                    <a href="why-us.html" class="btn btn-red">Our Unique Approach</a>
+                    <a href="why-us.html" class="btn btn-red">Discover Our Approach</a>
                 </div>
                 <div class="hidden">
-                    <img src="media__1777269534896.png" alt="Expertise" style="width: 100%; border-radius: 8px;">
+                    <img src="media__1777269534896.png" alt="Expertise" style="width: 100%; border-radius: 12px;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" id="contact">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px;">
+                <div class="hidden">
+                    <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem;">Contact Our <span style="color: var(--primary-red);">Architects</span></h2>
+                    <p style="margin-bottom: 2rem;">Ready to modernize your operations? Let's discuss your project today.</p>
+                    <div style="margin-bottom: 20px;"><i class="fas fa-envelope" style="color: var(--primary-red); margin-right: 10px;"></i> info@keinen.in</div>
+                    <div style="margin-bottom: 20px;"><i class="fas fa-phone" style="color: var(--primary-red); margin-right: 10px;"></i> +91 80415 01718</div>
+                </div>
+                <div class="hidden">
+                    <form style="background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                            <input type="text" placeholder="Name" style="width:100%; padding:12px; border:1px solid #eee; border-radius:4px;">
+                            <input type="email" placeholder="Email" style="width:100%; padding:12px; border:1px solid #eee; border-radius:4px;">
+                        </div>
+                        <select style="width:100%; padding:12px; border:1px solid #eee; border-radius:4px; margin-bottom:20px;">
+                            <option>Cybersecurity</option>
+                            <option>Data & AI</option>
+                            <option>Digital Transformation</option>
+                        </select>
+                        <textarea placeholder="Message" style="width:100%; padding:12px; border:1px solid #eee; border-radius:4px; margin-bottom:20px;" rows="4"></textarea>
+                        <button type="submit" class="btn btn-red" style="width: 100%;">Send Message</button>
+                    </form>
                 </div>
             </div>
         </div>
