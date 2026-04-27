@@ -2,14 +2,15 @@
     --primary-red: #E53935;
     --hover-red: #D32F2F;
     --dark-red: #B71C1C;
-    --bg-white: #FFFFFF;
-    --bg-gray: #F5F5F5;
     --text-dark: #212121;
-    --text-muted: #757575;
-    --text-white: #FFFFFF;
-    --nav-overlay: rgba(255, 255, 255, 0.98);
-    --hero-overlay: rgba(0, 0, 0, 0.5);
+    --text-muted: #666;
+    --text-white: #ffffff;
+    --bg-white: #ffffff;
+    --bg-gray: #f9f9f9;
     --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.3);
+    --red-gradient: linear-gradient(135deg, var(--primary-red), var(--dark-red));
     --btn-radius: 4px;
     --container-width: 1200px;
 }
@@ -30,7 +31,13 @@ body {
     background-color: var(--bg-white);
     line-height: 1.6;
     overflow-x: hidden;
-    padding-top: 120px; /* Space for the larger header */
+    padding-top: 100px; /* Reduced to match header height exactly */
+}
+
+.gradient-text {
+    background: var(--red-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .container {
@@ -443,46 +450,56 @@ nav {
 
 .sector-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
 }
 
 .sector-card {
-    height: 350px;
-    position: relative;
-    border-radius: 8px;
-    overflow: hidden;
-    color: var(--text-white);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    transition: var(--transition);
+    cursor: pointer;
+    text-align: left;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    padding: 30px;
-    transition: var(--transition);
 }
 
 .sector-card:hover {
-    transform: scale(1.02);
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    border-color: var(--primary-red);
 }
 
 .sector-card img {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
-    height: 100%;
+    height: 220px;
     object-fit: cover;
-    z-index: -2;
+    position: static;
+    z-index: 1;
+}
+
+.sector-card h3 {
+    padding: 25px 25px 10px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    position: static;
+}
+
+.sector-card p {
+    padding: 0 25px 25px;
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    position: static;
 }
 
 .sector-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8));
-    z-index: -1;
+    display: none;
 }
 
 /* --- Footer --- */
@@ -576,9 +593,62 @@ footer {
     display: flex;
     align-items: center;
     color: var(--text-white);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background-color: #000; /* Fallback color */
+}
+
+.hero-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.hero-video video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.6; /* Slight transparency for mood */
+}
+
+/* --- Section Video Backgrounds --- */
+.section-with-video {
+    position: relative;
+    overflow: hidden;
+}
+
+.bg-video-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.07; /* Very subtle to not distract from text */
+    pointer-events: none;
+}
+
+.bg-video-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* --- Sections --- */
+section, main, .section-padding {
+    background: var(--bg-white);
+}
+
+.bg-gray {
+    background: var(--bg-gray) !important;
+}
+
+.sector-card, .pillar-card, .contact-form-container {
+    background: white !important;
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
 .hero-overlay {
@@ -587,13 +657,13 @@ footer {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6));
-    z-index: 1;
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7));
+    z-index: 2;
 }
 
 .hero .container {
     position: relative;
-    z-index: 2;
+    z-index: 3;
 }
 
 .hero h1 {
@@ -637,5 +707,29 @@ footer {
     transform: scale(1.1) translateY(-5px);
     color: white;
 }
+
+/* --- Animations --- */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
+.floating {
+    animation: float 6s ease-in-out infinite;
+}
+
+.glow-red {
+    box-shadow: 0 0 20px rgba(229, 57, 53, 0.3);
+}
+
+.sector-card img {
+    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.sector-card:hover img {
+    transform: scale(1.1);
+}
+
 
 

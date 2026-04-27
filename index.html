@@ -10,6 +10,8 @@
 <body>
     <div id="scroll-progress"></div>
 
+
+
     <header id="main-header">
         <div class="container">
             <nav>
@@ -91,7 +93,12 @@
         </div>
     </header>
 
-    <section class="hero" id="home" style="background-image: url('https://images.openai.com/static-rsc-4/4MPtTEcmxGL9Bzck9Hh8wGurVKo0ctlLEj41B0CUI3i5lez01AAybpTu-W9Z74EZNsinCpgkGYhsAoLg_X7cTFr0bjdaNV9eYS7gcu_2HlsCD1u4CII4hw2f4i5Odc7r4LmPxDo83Fsn-XnYJccUtPaYOgUyy3Ea30U6tFdjGU-p8Hjo_Wp9z07Z_gwsDKJx?purpose=fullsize');">
+    <section class="hero" id="home" style="background-image: url('https://images.openai.com/static-rsc-4/4MPtTEcmxGL9Bzck9Hh8wGurVKo0ctlLEj41B0CUI3i5lez01AAybpTu-W9Z74EZNsinCpgkGYhsAoLg_X7cTFr0bjdaNV9eYS7gcu_2HlsCD1u4CII4hw2f4i5Odc7r4LmPxDo83Fsn-XnYJccUtPaYOgUyy3Ea30U6tFdjGU-p8Hjo_Wp9z07Z_gwsDKJx?purpose=fullsize'); background-size: cover; background-position: center;">
+        <div class="hero-video">
+            <video autoplay muted loop playsinline poster="https://images.openai.com/static-rsc-4/4MPtTEcmxGL9Bzck9Hh8wGurVKo0ctlLEj41B0CUI3i5lez01AAybpTu-W9Z74EZNsinCpgkGYhsAoLg_X7cTFr0bjdaNV9eYS7gcu_2HlsCD1u4CII4hw2f4i5Odc7r4LmPxDo83Fsn-XnYJccUtPaYOgUyy3Ea30U6tFdjGU-p8Hjo_Wp9z07Z_gwsDKJx?purpose=fullsize">
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-robotic-arm-in-a-factory-31405-large.mp4" type="video/mp4">
+            </video>
+        </div>
         <div class="hero-overlay"></div>
         <div class="container">
             <div class="hidden" style="max-width: 850px;">
@@ -134,11 +141,16 @@
         </div>
     </section>
 
-    <section class="section-padding" style="background: var(--bg-gray);" id="solutions">
+    <section class="section-padding section-with-video" id="solutions" style="background: #fdfdfd;">
+        <div class="bg-video-container">
+            <video autoplay muted loop playsinline>
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-technology-lines-and-dots-network-23130-large.mp4" type="video/mp4">
+            </video>
+        </div>
         <div class="container">
             <div style="text-align: center; margin-bottom: 50px;" class="hidden">
-                <h2 style="font-size: 2.5rem;">Core <span style="color: var(--primary-red);">Solutions</span></h2>
-                <p>Advanced technology implementations for complex business challenges.</p>
+                <h2 style="font-size: 2.5rem;" class="gradient-text">Core Solutions</h2>
+                <p style="font-size: 1.1rem; color: var(--text-muted); max-width: 700px; margin: 0 auto;">Advanced technology implementations for complex business challenges.</p>
             </div>
             <div class="pillar-grid">
                 <div class="pillar-card hidden" onclick="showServiceModal('cyber')">
@@ -172,31 +184,56 @@
         </div>
     </section>
 
-    <section class="section-padding" id="industries">
+    <section class="section-padding section-with-video" id="industries">
+        <div class="bg-video-container">
+            <video autoplay muted loop playsinline>
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-circuit-board-animation-1552-large.mp4" type="video/mp4">
+            </video>
+        </div>
         <div class="container">
             <div style="text-align: center; margin-bottom: 60px;" class="hidden">
-                <h2 style="font-size: 2.5rem;">Sectors We <span style="color: var(--primary-red);">Transform</span></h2>
+                <h2 style="font-size: 2.5rem;" class="gradient-text">Sectors We Transform</h2>
             </div>
             <div class="sector-grid">
                 <div class="sector-card hidden">
-                    <img src="sector_manufacturing_red_1777267582086.png" alt="Manufacturing">
-                    <h3>Manufacturing</h3>
-                    <p>ISA-95 architectures and full Industry X.0 transformation.</p>
+                    <img src="sector_manufacturing_red_1777267582086.png" alt="Manufacturing & Process">
+                    <h3>Manufacturing & Process</h3>
+                    <p>ISA-95 architectures, MES-SCADA integration, OEE intelligence, predictive maintenance, full Industry X.0 transformation.</p>
                 </div>
                 <div class="sector-card hidden">
-                    <img src="media__1777267839767.png" alt="Oil & Gas">
+                    <img src="sector_oil_gas.png" alt="Oil & Gas">
                     <h3>Oil & Gas</h3>
-                    <p>ATEX/IECEx certified safety instrumented systems.</p>
+                    <p>ATEX/IECEx certified for explosive hazardous areas. Safety Instrumented Systems (SIS), SIL assessment.</p>
                 </div>
                 <div class="sector-card hidden">
-                    <img src="sector_pharma_red_1777267596457.png" alt="Pharmaceuticals">
-                    <h3>Pharmaceuticals</h3>
-                    <p>21 CFR Part 11 compliant data systems and GAMP 5 validation.</p>
+                    <img src="sector_pharma_red_1777267596457.png" alt="Pharmaceuticals & Biotech">
+                    <h3>Pharmaceuticals & Biotech</h3>
+                    <p>21 CFR Part 11 compliant data systems. GAMP 5 validated automation. EBR integration.</p>
                 </div>
                 <div class="sector-card hidden">
-                    <img src="sector_cybersecurity_red_1777267513899.png" alt="Financial Services">
-                    <h3>Banking & Finance</h3>
-                    <p>Securing the backbone of the global digital economy.</p>
+                    <img src="sector_fmcg.png" alt="FMCG & Packaging">
+                    <h3>FMCG & Packaging</h3>
+                    <p>High-speed packaging line monitoring, OEE optimisation. AI-powered visual quality inspection.</p>
+                </div>
+                <div class="sector-card hidden">
+                    <img src="sector_healthcare.png" alt="Healthcare Facilities">
+                    <h3>Healthcare Facilities</h3>
+                    <p>EMR/HIS integration with clinical networks. Medical device networking (IEC 80001). HIPAA-aligned data security.</p>
+                </div>
+                <div class="sector-card hidden">
+                    <img src="sector_automotive_red_1777267613718.png" alt="Automotive Assembly">
+                    <h3>Automotive Assembly</h3>
+                    <p>Robotic welding cell control. AGV/AMR logistics network design. JIT system connectivity.</p>
+                </div>
+                <div class="sector-card hidden">
+                    <img src="sector_fpso.png" alt="FPSO, Marine & Offshore">
+                    <h3>FPSO, Marine & Offshore</h3>
+                    <p>Marine-grade certified systems for harsh/hazardous environments. Offshore platform control and automation.</p>
+                </div>
+                <div class="sector-card hidden">
+                    <img src="sector_datacenter_red_1777267630948.png" alt="Enterprise Campuses">
+                    <h3>Enterprise Campuses & Commercial RE</h3>
+                    <p>Campus-wide network infrastructure. Tier-rated on-premise data center design/build. ITIL-aligned operations.</p>
                 </div>
             </div>
             <div style="text-align: center; margin-top: 40px;">
@@ -236,7 +273,7 @@
                     <a href="why-us.html" class="btn btn-red">Discover Our Approach</a>
                 </div>
                 <div class="hidden">
-                    <img src="media__1777269534896.png" alt="Expertise" style="width: 100%; border-radius: 12px;">
+                    <img src="why_keinen.png" alt="Expertise" class="floating" style="width: 100%; border-radius: 12px;">
                 </div>
             </div>
         </div>
