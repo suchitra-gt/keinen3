@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keinen Corp | Architecting Digital Ecosystems</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-red: #E53935;
+            --hover-red: #D32F2F;
+            --dark-red: #B71C1C;
+            --bg-white: #FFFFFF;
+            --bg-gray: #F5F5F5;
+            --text-dark: #212121;
+            --text-muted: #757575;
+            --text-white: #FFFFFF;
+            --nav-overlay: rgba(255, 255, 255, 0.98);
+            --hero-overlay: rgba(0, 0, 0, 0.5);
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            --btn-radius: 4px;
+            --container-width: 1200px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--bg-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-padding {
+            padding: 100px 0;
+        }
+
+        /* --- Scroll Progress --- */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: var(--primary-red);
+            z-index: 3000;
+            transition: width 0.1s ease-out;
+        }
+
+        /* --- Top Header --- */
+        .top-header {
+            background: #1a1a1a;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 8px 0;
+            font-size: 0.75rem;
+            font-weight: 500;
+            z-index: 1001;
+            position: relative;
+        }
+
+        .top-header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .contact-items {
+            display: flex;
+            gap: 25px;
+        }
+
+        .contact-items i {
+            color: var(--primary-red);
+            margin-right: 6px;
+        }
+
+        .social-items a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-items a:hover {
+            color: var(--primary-red);
+        }
+
+        /* --- Navigation --- */
+        header {
+            position: fixed;
+            top: 34px;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: var(--transition);
+            background-color: transparent;
+            padding: 25px 0;
+        }
+
+        header.scrolled {
+            top: 0;
+            background-color: var(--nav-overlay);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            padding: 15px 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary-red);
+            letter-spacing: 1px;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--text-dark);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            list-style: none;
+        }
+
+        .nav-links li a {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        header.scrolled .nav-links li a {
+            color: var(--text-dark);
+        }
+
+        .nav-links li a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        header.scrolled .nav-links li a:hover {
+            background: var(--bg-gray);
+            color: var(--primary-red);
+        }
+
+        /* --- Buttons --- */
+        .btn {
+            display: inline-block;
+            padding: 0.9rem 2.2rem;
+            border-radius: var(--btn-radius);
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            border: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-red {
+            background-color: var(--primary-red);
+            color: var(--text-white);
+            box-shadow: 0 4px 15px rgba(229, 57, 53, 0.3);
+        }
+
+        .btn-red:hover {
+            background-color: var(--hover-red);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(229, 57, 53, 0.4);
+        }
+
+        /* --- Hero --- */
+        .hero {
+            height: 100vh;
+            background-color: #111;
+            background-image: linear-gradient(var(--hero-overlay), var(--hero-overlay)), url('hero_bg_red_tech_1777267496024.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            color: var(--text-white);
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(to top, var(--bg-white), transparent);
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 2.5rem;
+            max-width: 750px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* --- Pillar Cards --- */
+        .pillar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 50px;
+        }
+
+        .pillar-card {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            transition: var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pillar-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            border-color: var(--primary-red);
+        }
+
+        .pillar-num {
+            font-size: 3rem;
+            font-weight: 800;
+            color: rgba(229, 57, 53, 0.1);
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .pillar-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .pillar-tag {
+            background: #fdf2f2;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--primary-red);
+            text-transform: uppercase;
+        }
+
+        /* --- Sectors --- */
+        .sector-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .sector-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .sector-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .sector-content {
+            padding: 25px;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background: var(--bg-white);
+            padding: 100px 0 40px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+            gap: 4rem;
+        }
+
+        .footer-col h4 {
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-col ul li a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--primary-red);
+        }
+
+        .footer-bottom {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* --- Animations --- */
+        .hidden {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: var(--transition);
+        }
+
+        .visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 992px) {
+            .hero h1 { font-size: 3rem; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            header { top: 0; }
+            .top-header { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="scroll-progress"></div>
+
+    <div class="top-header">
+        <div class="container">
+            <div class="top-header-content">
+                <div class="contact-items">
+                    <span><i class="fas fa-phone"></i> +91 80415 01718</span>
+                    <span><i class="fas fa-envelope"></i> info@keinen.in</span>
+                </div>
+                <div class="social-items">
+                    <a href="https://linkedin.com/company/keinen-techne-solutions" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <header id="main-header">
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">KEINEN<span>CORP</span></a>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#industries">Industries</a></li>
+                    <li><a href="#why-us">Why Us</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <div class="header-action">
+                    <a href="#contact" class="btn btn-red">Talk to an Architect</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Where Intelligence Meets Infrastructure.</h1>
+                <p>We design and deploy integrated IT, OT, security, and automation ecosystems that don't just connect your enterprise — they make it intelligent.</p>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="#services" class="btn btn-red">Our Solutions &rarr;</a>
+                    <a href="#contact" class="btn" style="border: 2px solid white; color: white;">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section-padding">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;">
+                <div class="hidden">
+                    <div style="color: var(--primary-red); font-weight: 700; margin-bottom: 15px;">WHO WE ARE</div>
+                    <h2 style="font-size: 2.8rem; margin-bottom: 20px;">&ldquo;When technology is invisible, your people are unstoppable.&rdquo;</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 20px;">Keinen is your digital transformation architect — a team of specialists who treat IT, OT, Security, and Operations as one interconnected system.</p>
+                    <p style="color: var(--text-muted);">We think in ecosystems — every challenge is viewed as a complete picture. Engineers are trained across IT, OT, cybersecurity, data center, video, and collaboration. No silos, no hand-offs.</p>
+                </div>
+                <div class="hidden">
+                    <img src="about_tech_architects_red_1777267955851.png" style="width: 100%; border-radius: 10px; box-shadow: 0 20px 50px rgba(0,0,0,0.1);" alt="About Keinen">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="section-padding" style="background: var(--bg-gray);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 60px;">
+                <h2 style="font-size: 2.5rem;">Our Core Disciplines</h2>
+                <p style="color: var(--text-muted);">Seven Disciplines. One Integrated Ecosystem.</p>
+            </div>
+            <div class="pillar-grid">
+                <div class="pillar-card hidden">
+                    <div class="pillar-num">01</div>
+                    <h3 style="color: var(--primary-red);">Enterprise Networks</h3>
+                    <p>Foundation-grade wired/wireless networks, SD-WAN, and UC connecting teams globally.</p>
+                    <div class="pillar-tags"><span class="pillar-tag">SD-WAN</span><span class="pillar-tag">IT Infra</span></div>
+                </div>
+                <div class="pillar-card hidden">
+                    <div class="pillar-num">02</div>
+                    <h3 style="color: var(--primary-red);">OT & Automation</h3>
+                    <p>SCADA/HMI, PLC/DCS, MES integration, and predictive maintenance for intelligent operations.</p>
+                    <div class="pillar-tags"><span class="pillar-tag">SCADA</span><span class="pillar-tag">MES</span></div>
+                </div>
+                <div class="pillar-card hidden">
+                    <div class="pillar-num">03</div>
+                    <h3 style="color: var(--primary-red);">Cybersecurity</h3>
+                    <p>IT/OT assessments aligned to IEC 62443, NIST CSF, ISO 27001. Zero Trust security.</p>
+                    <div class="pillar-tags"><span class="pillar-tag">IEC 62443</span><span class="pillar-tag">Zero Trust</span></div>
+                </div>
+                <div class="pillar-card hidden">
+                    <div class="pillar-num">04</div>
+                    <h3 style="color: var(--primary-red);">Data Centers</h3>
+                    <p>TIA-942 compliant design Tier I–IV. High-efficiency cooling and redundant power.</p>
+                    <div class="pillar-tags"><span class="pillar-tag">TIA-942</span><span class="pillar-tag">Uptime</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="industries" class="section-padding">
+        <div class="container">
+            <div style="text-align: center; marginBottom: 60px;">
+                <h2 style="fontSize: 2.5rem;">Sectors We Transform</h2>
+            </div>
+            <div class="sector-grid">
+                <div class="sector-card hidden">
+                    <img src="sector_manufacturing_red_1777267582086.png" class="sector-img" alt="Manufacturing">
+                    <div class="sector-content">
+                        <h4>Manufacturing</h4>
+                        <p>ISA-95 architectures and full Industry X.0 transformation.</p>
+                    </div>
+                </div>
+                <div class="sector-card hidden">
+                    <img src="sector_energy_red_1777267533087.png" class="sector-img" alt="Energy">
+                    <div class="sector-content">
+                        <h4>Oil & Gas</h4>
+                        <p>ATEX/IECEx certified safety instrumented systems.</p>
+                    </div>
+                </div>
+                <div class="sector-card hidden">
+                    <img src="sector_pharma_red_1777267596457.png" class="sector-img" alt="Pharma">
+                    <div class="sector-content">
+                        <h4>Pharmaceuticals</h4>
+                        <p>21 CFR Part 11 compliant data systems and GAMP 5 validation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="why-us" class="section-padding" style="background: var(--bg-gray);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 60px;">
+                <h2 style="font-size: 2.5rem;">Why Choose Keinen?</h2>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px;">
+                <div class="hidden">
+                    <h4 style="color: var(--primary-red); margin-bottom: 15px;">Total Accountability</h4>
+                    <p>No hand-offs. No blame games. Your entire digital estate designed by one team.</p>
+                </div>
+                <div class="hidden">
+                    <h4 style="color: var(--primary-red); margin-bottom: 15px;">Framework Driven</h4>
+                    <p>Built on global standards like ISA-95, IEC 62443, and TOGAF.</p>
+                </div>
+                <div class="hidden">
+                    <h4 style="color: var(--primary-red); margin-bottom: 15px;">Future Proof</h4>
+                    <p>Technology selection driven by your 5-year trajectory, not just today's needs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section-padding">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem;">
+                <div class="hidden">
+                    <h2 style="font-size: 2.5rem; margin-bottom: 20px;">Ready to Talk?</h2>
+                    <p style="margin-bottom: 30px;">Schedule a structured discovery session with our senior architects.</p>
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div><i class="fas fa-map-marker-alt" style="color: var(--primary-red); margin-right: 15px;"></i> Bengaluru, India</div>
+                        <div><i class="fas fa-phone" style="color: var(--primary-red); margin-right: 15px;"></i> +91 80415 01718</div>
+                        <div><i class="fas fa-envelope" style="color: var(--primary-red); margin-right: 15px;"></i> info@keinen.in</div>
+                    </div>
+                </div>
+                <div class="hidden">
+                    <form style="background: var(--bg-gray); padding: 40px; border-radius: 10px;">
+                        <input type="text" placeholder="Full Name" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 4px;">
+                        <input type="email" placeholder="Email Address" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 4px;">
+                        <textarea placeholder="Your Message" rows="5" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 4px;"></textarea>
+                        <button class="btn btn-red" style="width: 100%;">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo" style="margin-bottom: 20px;">KEINEN<span>CORP</span></div>
+                    <p>Architecting digital ecosystems for enterprise excellence.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Solutions</h4>
+                    <ul>
+                        <li><a href="#">IT Infra</a></li>
+                        <li><a href="#">Automation</a></li>
+                        <li><a href="#">Cybersecurity</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Why Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div>&copy; 2025 Keinen Techne Solutions. All rights reserved.</div>
+                <div><a href="#" style="color: var(--text-muted); text-decoration: none;"><i class="fab fa-linkedin"></i> LinkedIn</a></div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Header Scroll
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            // Progress Bar
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            document.getElementById('scroll-progress').style.width = (scrollTop / docHeight * 100) + '%';
+        });
+
+        // Reveal on Scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
