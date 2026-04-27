@@ -122,23 +122,88 @@
     <section class="section-padding" style="background: var(--bg-gray);">
         <div class="container">
             <div style="text-align: center; margin-bottom: 50px;" class="hidden">
-                <h2 style="font-size: 2.5rem;">Strategic <span style="color: var(--primary-red);">Pillars</span></h2>
+                <h2 style="font-size: 2.5rem;">Core <span style="color: var(--primary-red);">Solutions</span></h2>
+                <p>Advanced technology implementations for complex business challenges.</p>
             </div>
             <div class="pillar-grid">
-                <div class="pillar-card hidden">
+                <div class="pillar-card hidden" onclick="showServiceModal('cyber')">
                     <div class="pillar-num">01</div>
-                    <h3 style="color: var(--primary-red);">Strategy</h3>
-                    <p>Aligning technology roadmaps with core business objectives.</p>
+                    <h3 style="color: var(--primary-red);">Cybersecurity</h3>
+                    <p>Proactive defense and resilient architectures for a world of escalating threats.</p>
+                    <div class="pillar-tags"><span class="pillar-tag">MDR</span> <span class="pillar-tag">Zero Trust</span></div>
                 </div>
-                <div class="pillar-card hidden">
+                <div class="pillar-card hidden" onclick="showServiceModal('data')">
                     <div class="pillar-num">02</div>
-                    <h3 style="color: var(--primary-red);">Security</h3>
-                    <p>Built-in resilience for every layer of your digital stack.</p>
+                    <h3 style="color: var(--primary-red);">Data & AI</h3>
+                    <p>Transforming raw data into competitive advantage through production-grade AI.</p>
+                    <div class="pillar-tags"><span class="pillar-tag">GenAI</span> <span class="pillar-tag">Analytics</span></div>
                 </div>
-                <div class="pillar-card hidden">
+                <div class="pillar-card hidden" onclick="showServiceModal('digital')">
                     <div class="pillar-num">03</div>
-                    <h3 style="color: var(--primary-red);">Scale</h3>
-                    <p>Architecture designed for global performance and future growth.</p>
+                    <h3 style="color: var(--primary-red);">Digital Transformation</h3>
+                    <p>Modernizing legacy systems and reimagining processes for agility.</p>
+                    <div class="pillar-tags"><span class="pillar-tag">Cloud-Native</span> <span class="pillar-tag">DevOps</span></div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="solutions.html" class="btn btn-red">View All Solutions</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 60px;" class="hidden">
+                <h2 style="font-size: 2.5rem;">Sectors We <span style="color: var(--primary-red);">Transform</span></h2>
+            </div>
+            <div class="sector-grid">
+                <div class="sector-card hidden">
+                    <img src="sector_manufacturing_red_1777267582086.png" alt="Manufacturing">
+                    <h3>Manufacturing</h3>
+                    <p>ISA-95 architectures and full Industry X.0 transformation.</p>
+                </div>
+                <div class="sector-card hidden">
+                    <img src="media__1777267839767.png" alt="Oil & Gas">
+                    <h3>Oil & Gas</h3>
+                    <p>ATEX/IECEx certified safety instrumented systems.</p>
+                </div>
+                <div class="sector-card hidden">
+                    <img src="sector_pharma_red_1777267596457.png" alt="Pharmaceuticals">
+                    <h3>Pharmaceuticals</h3>
+                    <p>21 CFR Part 11 compliant data systems and GAMP 5 validation.</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="industries.html" class="btn" style="border: 1px solid var(--primary-red); color: var(--primary-red);">Explore All Industries</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" style="background: #111; color: white;">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
+                <div class="hidden">
+                    <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem;">Why <span style="color: var(--primary-red);">Keinen</span>?</h2>
+                    <ul style="list-style: none;">
+                        <li style="margin-bottom: 20px; display: flex; gap: 15px;">
+                            <i class="fas fa-check-circle" style="color: var(--primary-red); margin-top: 5px;"></i>
+                            <div>
+                                <h4 style="margin-bottom: 5px;">End-to-End Capability</h4>
+                                <p style="color: #999;">From strategy to 24/7 managed operations.</p>
+                            </div>
+                        </li>
+                        <li style="margin-bottom: 20px; display: flex; gap: 15px;">
+                            <i class="fas fa-check-circle" style="color: var(--primary-red); margin-top: 5px;"></i>
+                            <div>
+                                <h4 style="margin-bottom: 5px;">Domain Specific Depth</h4>
+                                <p style="color: #999;">Architects who understand your industry.</p>
+                            </div>
+                        </li>
+                    </ul>
+                    <a href="why-us.html" class="btn btn-red">Our Unique Approach</a>
+                </div>
+                <div class="hidden">
+                    <img src="media__1777269534896.png" alt="Expertise" style="width: 100%; border-radius: 8px;">
                 </div>
             </div>
         </div>
