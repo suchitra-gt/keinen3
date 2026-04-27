@@ -110,19 +110,13 @@
         /* --- Navigation --- */
         header {
             position: fixed;
-            top: 34px;
+            top: 0;
             left: 0;
             width: 100%;
             z-index: 1000;
             transition: var(--transition);
-            background-color: transparent;
-            padding: 25px 0;
-        }
-
-        header.scrolled {
-            top: 0;
-            background-color: var(--nav-overlay);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            background-color: var(--bg-white);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
             padding: 15px 0;
         }
 
@@ -151,7 +145,7 @@
         }
 
         .nav-links li a {
-            color: rgba(255, 255, 255, 0.9);
+            color: var(--text-dark);
             font-weight: 600;
             font-size: 0.85rem;
             text-transform: uppercase;
@@ -162,15 +156,7 @@
             transition: var(--transition);
         }
 
-        header.scrolled .nav-links li a {
-            color: var(--text-dark);
-        }
-
         .nav-links li a:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        header.scrolled .nav-links li a:hover {
             background: var(--bg-gray);
             color: var(--primary-red);
         }
@@ -428,7 +414,6 @@
                 <p>We design and deploy integrated IT, OT, security, and automation ecosystems that don't just connect your enterprise — they make it intelligent.</p>
                 <div style="display: flex; gap: 1rem;">
                     <a href="#services" class="btn btn-red">Our Solutions &rarr;</a>
-                    <a href="#contact" class="btn" style="border: 2px solid white; color: white;">Contact Us</a>
                 </div>
             </div>
         </div>
@@ -601,16 +586,8 @@
     </footer>
 
     <script>
-        // Header Scroll
-        const header = document.getElementById('main-header');
+        // Header Scroll & Progress
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-            
-            // Progress Bar
             const scrollTop = window.scrollY;
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
             document.getElementById('scroll-progress').style.width = (scrollTop / docHeight * 100) + '%';
@@ -626,6 +603,37 @@
         }, { threshold: 0.1 });
 
         document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
+
+        // Dynamic Content Fetching (Making it dynamic)
+        async function fetchDynamicContent() {
+            try {
+                // Fetch Services
+                const servicesRes = await fetch('http://localhost:5000/api/services');
+                if (servicesRes.ok) {
+                    const services = await servicesRes.json();
+                    const grid = document.querySelector('.pillar-grid');
+                    if (services.length > 0) {
+                        grid.innerHTML = ''; // Clear static content
+                        services.forEach((s, i) => {
+                            const card = document.createElement('div');
+                            card.className = 'pillar-card hidden';
+                            card.innerHTML = `
+                                <div class="pillar-num">${String(i + 1).padStart(2, '0')}</div>
+                                <h3 style="color: var(--primary-red);">${s.title}</h3>
+                                <p>${s.description}</p>
+                                <div class="pillar-tags">${JSON.parse(s.tags).map(t => `<span class="pillar-tag">${t}</span>`).join('')}</div>
+                            `;
+                            grid.appendChild(card);
+                            observer.observe(card);
+                        });
+                    }
+                }
+            } catch (err) {
+                console.log('Backend not running, staying in static mode.');
+            }
+        }
+        
+        window.addEventListener('DOMContentLoaded', fetchDynamicContent);
     </script>
 </body>
 </html>
