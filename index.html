@@ -154,11 +154,138 @@
             padding: 8px 16px;
             border-radius: 4px;
             transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
-        .nav-links li a:hover {
-            background: var(--bg-gray);
+        .nav-links li {
+            position: relative;
+        }
+
+        /* --- MEGA MENU --- */
+        .mega-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            width: 1000px;
+            background: white;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            display: grid;
+            grid-template-columns: 280px 320px 1fr;
+            padding: 30px;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 2000;
+            text-transform: none; /* Reset uppercase for menu items */
+        }
+
+        .nav-links li:hover .mega-menu {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) translateY(10px);
+        }
+
+        .mega-col {
+            padding: 0 20px;
+            border-right: 1px solid #eee;
+        }
+
+        .mega-col:last-child {
+            border-right: none;
+        }
+
+        .mega-col h5 {
+            font-size: 0.75rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .service-list, .sub-service-list, .solution-list {
+            list-style: none;
+        }
+
+        .service-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 5px;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .service-item i {
+            margin-right: 12px;
             color: var(--primary-red);
+            font-size: 1rem;
+        }
+
+        .service-item.active {
+            background: #f0f7ff;
+            color: #2563eb;
+        }
+
+        .service-item.active i {
+            color: #2563eb;
+        }
+
+        .sub-service-list li {
+            padding: 10px 0;
+            font-size: 0.85rem;
+            color: #555;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .sub-service-list li:hover {
+            color: var(--primary-red);
+            padding-left: 5px;
+        }
+
+        .solution-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border: 1px solid #f0f0f0;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .solution-item:hover {
+            border-color: var(--primary-red);
+            background: #fffafa;
+            transform: translateY(-2px);
+        }
+
+        .solution-icon {
+            width: 40px;
+            height: 40px;
+            background: #f0f7ff;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+        }
+
+        .solution-text {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-dark);
         }
 
         /* --- Buttons --- */
@@ -395,7 +522,73 @@
                 <ul class="nav-links">
                     <li><a href="#home">Home</a></li>
                     <li><a href="#about">About</a></li>
-                    <li><a href="#services">Services</a></li>
+                    <li class="has-mega">
+                        <a href="#services">Solutions <i class="fas fa-chevron-down" style="font-size: 0.6rem;"></i></a>
+                        <div class="mega-menu">
+                            <div class="mega-col">
+                                <h5>Our Services</h5>
+                                <div class="service-list">
+                                    <div class="service-item active" data-category="cyber">
+                                        <span><i class="fas fa-shield-alt"></i> Cybersecurity</span>
+                                        <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
+                                    </div>
+                                    <div class="service-item" data-category="data">
+                                        <span><i class="fas fa-database"></i> Data & AI Services</span>
+                                        <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
+                                    </div>
+                                    <div class="service-item" data-category="digital">
+                                        <span><i class="fas fa-bolt"></i> Digital Transformation</span>
+                                        <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
+                                    </div>
+                                    <div class="service-item" data-category="enterprise">
+                                        <span><i class="fas fa-cube"></i> Enterprise Applications</span>
+                                        <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
+                                    </div>
+                                    <div class="service-item" data-category="workforce">
+                                        <span><i class="fas fa-users"></i> IT Workforce Solutions</span>
+                                        <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mega-col">
+                                <h5>Sub Services</h5>
+                                <ul class="sub-service-list" id="sub-service-list">
+                                    <!-- Dynamic content -->
+                                    <li>Application Security Services</li>
+                                    <li>Cloud Security Services</li>
+                                    <li>Data Security & Privacy Services</li>
+                                    <li>Endpoint Security Services</li>
+                                    <li>Governance, Risk & Compliance (GRC) Services</li>
+                                    <li>Identity and Access Management (IAM) Services</li>
+                                    <li>Network Security Services</li>
+                                    <li>Security Operations and Incident Response Services</li>
+                                    <li>Security Testing & Simulation Services</li>
+                                </ul>
+                            </div>
+                            <div class="mega-col">
+                                <h5>Recommended Solutions</h5>
+                                <div class="solution-list" id="solution-list">
+                                    <!-- Dynamic content -->
+                                    <div class="solution-item">
+                                        <div class="solution-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                                        <div class="solution-text">Enterprise Cyber Risk Reduction</div>
+                                    </div>
+                                    <div class="solution-item">
+                                        <div class="solution-icon"><i class="fas fa-lightbulb"></i></div>
+                                        <div class="solution-text">Zero Trust Security Transformation</div>
+                                    </div>
+                                    <div class="solution-item">
+                                        <div class="solution-icon"><i class="fas fa-cloud"></i></div>
+                                        <div class="solution-text">Cloud & Application Security Modernization</div>
+                                    </div>
+                                    <div class="solution-item">
+                                        <div class="solution-icon"><i class="fas fa-search"></i></div>
+                                        <div class="solution-text">Managed Detection & Response (MDR)</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
                     <li><a href="#industries">Industries</a></li>
                     <li><a href="#why-us">Why Us</a></li>
                     <li><a href="#contact">Contact</a></li>
@@ -633,6 +826,75 @@
             }
         }
         
+        // Mega Menu Switching Logic
+        const megaData = {
+            cyber: {
+                subs: ['Application Security Services', 'Cloud Security Services', 'Data Security & Privacy Services', 'Endpoint Security Services', 'GRC Services', 'IAM Services', 'Network Security Services', 'Incident Response', 'Security Testing'],
+                solns: [
+                    { icon: 'fa-exclamation-triangle', text: 'Enterprise Cyber Risk Reduction' },
+                    { icon: 'fa-lightbulb', text: 'Zero Trust Transformation' },
+                    { icon: 'fa-cloud', text: 'Cloud Security Modernization' },
+                    { icon: 'fa-search', text: 'Managed Detection & Response' }
+                ]
+            },
+            data: {
+                subs: ['Big Data Analytics', 'AI & Machine Learning', 'Data Engineering', 'Business Intelligence', 'Data Governance', 'Predictive Modeling'],
+                solns: [
+                    { icon: 'fa-brain', text: 'AI-Driven Predictive Analytics' },
+                    { icon: 'fa-database', text: 'Enterprise Data Warehouse' },
+                    { icon: 'fa-chart-line', text: 'Real-time BI Dashboarding' }
+                ]
+            },
+            digital: {
+                subs: ['Cloud Migration', 'App Modernization', 'IoT Strategy', 'DevOps Automation', 'Digital Workplace', 'Experience Design'],
+                solns: [
+                    { icon: 'fa-rocket', text: 'Accelerated Cloud Journey' },
+                    { icon: 'fa-sync', text: 'Legacy App Modernization' },
+                    { icon: 'fa-mobile-alt', text: 'Omni-channel Experience' }
+                ]
+            },
+            enterprise: {
+                subs: ['ERP Implementation', 'CRM Solutions', 'Supply Chain Management', 'HRMS Systems', 'Financial Management', 'Asset Management'],
+                solns: [
+                    { icon: 'fa-cogs', text: 'Global ERP Rollout' },
+                    { icon: 'fa-handshake', text: 'Customer Lifecycle Mgmt' },
+                    { icon: 'fa-truck', text: 'Smart Supply Chain' }
+                ]
+            },
+            workforce: {
+                subs: ['Managed Staffing', 'Exec Search', 'Talent Acquisition', 'Training & Upskilling', 'Project Based Staffing', 'Contingent Workforce'],
+                solns: [
+                    { icon: 'fa-user-tie', text: 'Tech Leadership Hiring' },
+                    { icon: 'fa-users-cog', text: 'Global Capability Centers' },
+                    { icon: 'fa-graduation-cap', text: 'Digital Skills Academy' }
+                ]
+            }
+        };
+
+        const serviceItems = document.querySelectorAll('.service-item');
+        const subList = document.getElementById('sub-service-list');
+        const solnList = document.getElementById('solution-list');
+
+        serviceItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                // Active state
+                serviceItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+
+                // Update content
+                const cat = item.dataset.category;
+                const data = megaData[cat];
+
+                subList.innerHTML = data.subs.map(s => `<li>${s}</li>`).join('');
+                solnList.innerHTML = data.solns.map(s => `
+                    <div class="solution-item">
+                        <div class="solution-icon"><i class="fas ${s.icon}"></i></div>
+                        <div class="solution-text">${s.text}</div>
+                    </div>
+                `).join('');
+            });
+        });
+
         window.addEventListener('DOMContentLoaded', fetchDynamicContent);
     </script>
 </body>
