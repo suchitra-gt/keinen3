@@ -3,76 +3,64 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className="main-footer">
+    <footer>
       <div className="container">
         <div className="footer-grid">
-          <div className="footer-col brand-col">
-            <div className="logo" style={{ marginBottom: '25px' }}>KEINEN<span>CORP</span></div>
-            <p className="footer-desc">
-              We architect integrated digital ecosystems for enterprises to perform at full potential — securely, efficiently, at scale.
-            </p>
-            <div className="footer-contact-info">
-              <div className="info-item">
-                <i className="fas fa-map-marker-alt"></i>
-                <span>Bengaluru, Karnataka, India</span>
-              </div>
-              <div className="info-item">
-                <i className="fas fa-phone"></i>
-                <span>+91 80415 01718</span>
-              </div>
-              <div className="info-item">
-                <i className="fas fa-envelope"></i>
-                <span>info@keinen.in</span>
-              </div>
-            </div>
+          <div>
+            <Link to="/" className="footer-logo">
+              <img src="/logo.png" alt="Keinen Corp" style={{ height: '60px' }} />
+            </Link>
+            <p>Architecting the digital ecosystems of tomorrow. We specialize in enterprise IT, OT, security, and digital transformation.</p>
           </div>
-
-          <div className="footer-col">
+          <div className="footer-links">
             <h4>Solutions</h4>
             <ul>
-              <li><Link to="/services">Enterprise Networks</Link></li>
-              <li><Link to="/services">OT & Automation</Link></li>
-              <li><Link to="/services">Cybersecurity</Link></li>
-              <li><Link to="/services">Data Centers</Link></li>
-              <li><Link to="/services">Digital Transformation</Link></li>
+              <li><Link to="/solutions">Cybersecurity</Link></li>
+              <li><Link to="/solutions">Data & AI</Link></li>
+              <li><Link to="/solutions">Enterprise Apps</Link></li>
+              <li><Link to="/solutions">IT Infrastructure</Link></li>
             </ul>
           </div>
-
-          <div className="footer-col">
-            <h4>Industries</h4>
+          <div className="footer-links">
+            <h4>Quick Links</h4>
             <ul>
-              <li><Link to="/industries">Manufacturing</Link></li>
-              <li><Link to="/industries">Oil & Gas</Link></li>
-              <li><Link to="/industries">Pharmaceuticals</Link></li>
-              <li><Link to="/industries">Healthcare</Link></li>
-              <li><Link to="/industries">Education</Link></li>
+              <li><Link to="/about">About Us</Link></li>
+              <li><Link to="/industries">Industries</Link></li>
+              <li><Link to="/why-us">Why Us</Link></li>
+              <li><Link to="/contact">Contact</Link></li>
             </ul>
           </div>
-
-          <div className="footer-col">
-            <h4>Company</h4>
-            <ul>
-              <li><Link to="/about">About Keinen</Link></li>
-              <li><Link to="/why-us">Why Choose Us</Link></li>
-              <li><Link to="/contact">Contact Us</Link></li>
-              <li><a href="https://linkedin.com/company/keinen-techne-solutions" target="_blank" rel="noopener noreferrer">
-                <i className="fab fa-linkedin"></i> LinkedIn
-              </a></li>
-            </ul>
+          <div className="footer-links">
+            <h4>Newsletter</h4>
+            <div className="newsletter">
+              <p>Stay updated with our latest industry insights.</p>
+              <form className="newsletter-form" onSubmit={(e) => e.preventDefault()}>
+                <input type="email" placeholder="Your email" required />
+                <button type="submit" className="btn btn-red" style={{ padding: '10px 15px' }}>
+                  <i className="fas fa-paper-plane"></i>
+                </button>
+              </form>
+            </div>
           </div>
         </div>
-
-        <div className="footer-bottom">
-          <div className="copyright">
-            &copy; {new Date().getFullYear()} Keinen Techne Solutions Private Limited. All rights reserved.
-          </div>
+        <div className="bottom-footer">
+          <p>&copy; 2024 Keinen Corp. All rights reserved.</p>
           <div className="footer-legal">
             <Link to="/privacy">Privacy Policy</Link>
-            <Link to="/terms">Terms of Use</Link>
-            <Link to="/legal">Legal Disclosure</Link>
+            <Link to="/terms">Terms of Service</Link>
           </div>
         </div>
       </div>
+      
+      {/* WhatsApp Floating Button */}
+      <a 
+        href="https://wa.me/918041501718" 
+        className="whatsapp-float" 
+        target="_blank" 
+        rel="noopener noreferrer"
+      >
+        <i className="fab fa-whatsapp"></i>
+      </a>
     </footer>
   );
 };
