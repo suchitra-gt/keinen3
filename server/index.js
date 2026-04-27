@@ -1,11 +1,15 @@
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Serve static files from the root directory (for legacy index.html)
+app.use(express.static(path.join(__dirname, '../')));
 
 // Database Connection
 const db = mysql.createConnection({
@@ -24,8 +28,6 @@ db.connect((err) => {
 });
 
 // API Routes
-
-// Get all services
 app.get('/api/services', (req, res) => {
     db.query('SELECT * FROM services ORDER BY display_order', (err, results) => {
         if (err) return res.status(500).json(err);
@@ -33,7 +35,6 @@ app.get('/api/services', (req, res) => {
     });
 });
 
-// Get all industries
 app.get('/api/industries', (req, res) => {
     db.query('SELECT * FROM industries ORDER BY display_order', (err, results) => {
         if (err) return res.status(500).json(err);
@@ -41,7 +42,6 @@ app.get('/api/industries', (req, res) => {
     });
 });
 
-// Handle contact form submission
 app.post('/api/contact', (req, res) => {
     const { full_name, email, company, subject, message } = req.body;
     const query = 'INSERT INTO contacts (full_name, email, company, subject, message) VALUES (?, ?, ?, ?, ?)';
@@ -51,7 +51,13 @@ app.post('/api/contact', (req, res) => {
     });
 });
 
+// Fallback for SPA (React) if running from server
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../index.html'));
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
 });
+

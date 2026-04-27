@@ -14,6 +14,12 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- Helper to prevent blank page when opened directly -->
+    <script>
+      if (window.location.pathname.includes('/client/index.html')) {
+        console.warn("You are opening the React template directly. Please open the root index.html instead.");
+      }
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

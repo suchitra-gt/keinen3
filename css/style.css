@@ -30,7 +30,6 @@ body {
     background-color: var(--bg-white);
     line-height: 1.6;
     overflow-x: hidden;
-    padding-top: 120px; /* Space for the larger header */
 }
 
 .container {
@@ -55,9 +54,36 @@ body {
     transition: width 0.1s ease-out;
 }
 
+/* --- TOP HEADER --- */
+.top-header {
+    background: #1a1a1a;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 8px 0;
+    font-size: 0.75rem;
+    font-weight: 500;
+    z-index: 1001;
+    position: relative;
+}
+
+.top-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.contact-items {
+    display: flex;
+    gap: 25px;
+}
+
+.contact-items i {
+    color: var(--primary-red);
+    margin-right: 6px;
+}
+
 /* --- Navigation --- */
 header {
-    position: fixed;
+    position: relative;
     top: 0;
     left: 0;
     width: 100%;
@@ -65,8 +91,10 @@ header {
     transition: var(--transition);
     background-color: var(--bg-white);
     box-shadow: 0 2px 15px rgba(0,0,0,0.08);
-    padding: 5px 0;
+    padding: 15px 0;
 }
+
+
 
 header .container {
     max-width: 100%;
@@ -77,10 +105,11 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 30px;
 }
 
 .logo {
-    height: 100px;
+    height: 60px;
     display: flex;
     align-items: center;
 }
@@ -90,25 +119,50 @@ nav {
     width: auto;
 }
 
-.nav-links {
+.nav-wrapper {
+    flex: 1;
     display: flex;
-    gap: 10px;
-    list-style: none;
+    flex-direction: column;
+    gap: 12px; /* Balanced vertical gap */
+    align-items: center;
+    padding: 5px 0;
 }
 
-.nav-links li a {
-    color: var(--text-dark);
-    font-weight: 600;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-decoration: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    transition: var(--transition);
+.nav-row {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 15px; /* Increased for better spacing */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    white-space: nowrap; /* Prevents text from breaking into two lines */
+}
+
+.nav-row li a {
+    color: var(--text-dark);
+    font-weight: 700;
+    font-size: 0.8rem; /* Improved readability */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.nav-row li a:hover {
+    color: var(--primary-red);
+}
+
+.nav-row li a.active {
+    color: var(--primary-red);
+}
+
+.dot-sep {
+    width: 4px;
+    height: 4px;
+    background-color: var(--primary-red);
+    border-radius: 50%;
+    margin: 0 8px;
+    opacity: 0.8;
 }
 
 .nav-links li {
@@ -587,7 +641,7 @@ footer {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6));
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4));
     z-index: 1;
 }
 
@@ -632,10 +686,80 @@ footer {
     transition: var(--transition);
 }
 
-.whatsapp-float:hover {
-    background-color: #128c7e;
-    transform: scale(1.1) translateY(-5px);
+/* --- Site Map Navigation Section --- */
+.site-map-section {
+    background: #2a2a2a;
+    padding: 40px 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
     color: white;
 }
 
+.map-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: center;
+}
 
+.map-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.map-row:last-child {
+    margin-bottom: 0;
+}
+
+.map-link {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.map-link:hover {
+    color: var(--primary-red);
+}
+
+.map-dot {
+    width: 4px;
+    height: 4px;
+    background: var(--primary-red);
+    border-radius: 50%;
+    opacity: 0.6;
+}
+
+@media (max-width: 768px) {
+    .map-row {
+        gap: 10px;
+    }
+    .map-link {
+        font-size: 0.75rem;
+    }
+}
+
+/* --- Portfolio / Case Studies --- */
+.portfolio-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.1) !important;
+}
+
+.portfolio-card a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 992px) {
+    .portfolio-card {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+}
