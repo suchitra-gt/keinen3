@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { NavLink, Link, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -19,12 +19,12 @@ const Navbar = () => {
         <nav>
           <Link to="/" className="logo">KEINEN<span>CORP</span></Link>
           <ul className="nav-links">
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/about">About</Link></li>
-            <li><Link to="/services">Services</Link></li>
-            <li><Link to="/industries">Industries</Link></li>
-            <li><Link to="/why-us">Why Us</Link></li>
-            <li><Link to="/contact">Contact</Link></li>
+            <li><NavLink to="/" end>Home</NavLink></li>
+            <li><NavLink to="/about">About</NavLink></li>
+            <li><NavLink to="/services">Services</NavLink></li>
+            <li><NavLink to="/industries">Industries</NavLink></li>
+            <li><NavLink to="/why-us">Why Us</NavLink></li>
+            <li><NavLink to="/contact">Contact</NavLink></li>
           </ul>
           <div className="header-action">
             <Link to="/contact" className="btn btn-red">Talk to an Architect</Link>
