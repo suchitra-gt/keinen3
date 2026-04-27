@@ -251,6 +251,137 @@
             color: var(--text-dark);
         }
 
+        /* --- Service Modal --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .service-modal {
+            background: white;
+            width: 100%;
+            max-width: 1200px;
+            max-height: 90vh;
+            border-radius: 12px;
+            overflow-y: auto;
+            position: relative;
+            padding: 50px;
+            animation: modalSlide 0.4s ease-out;
+        }
+
+        @keyframes modalSlide {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #999;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--primary-red);
+        }
+
+        .modal-header h2 {
+            font-size: 2.5rem;
+            color: var(--primary-red);
+            margin-bottom: 15px;
+        }
+
+        .modal-desc {
+            font-size: 1.1rem;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            max-width: 800px;
+        }
+
+        .use-case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .use-case-card {
+            background: #fcfcfc;
+            border-left: 4px solid var(--primary-red);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .use-case-card h4 {
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .uc-section {
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+        }
+
+        .uc-label {
+            font-weight: 700;
+            color: var(--primary-red);
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .industry-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 40px 0;
+        }
+
+        .ind-tag {
+            background: var(--bg-gray);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .why-modal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            background: #fff8f8;
+            padding: 40px;
+            border-radius: 12px;
+            margin-top: 50px;
+        }
+
+        .why-modal-item h4 {
+            color: var(--primary-red);
+            margin-bottom: 10px;
+        }
+
+        .why-modal-item p {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.6;
+        }
+
         /* --- Buttons --- */
         .btn {
             display: inline-block;
@@ -479,23 +610,23 @@
                             <div class="mega-col">
                                 <h5>Our Services</h5>
                                 <div class="service-list">
-                                    <div class="service-item active" data-category="cyber">
+                                    <div class="service-item active" data-category="cyber" onclick="showServiceModal('cyber')">
                                         <span><i class="fas fa-shield-alt"></i> Cybersecurity</span>
                                         <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
                                     </div>
-                                    <div class="service-item" data-category="data">
+                                    <div class="service-item" data-category="data" onclick="showServiceModal('data')">
                                         <span><i class="fas fa-database"></i> Data & AI Services</span>
                                         <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
                                     </div>
-                                    <div class="service-item" data-category="digital">
+                                    <div class="service-item" data-category="digital" onclick="showServiceModal('digital')">
                                         <span><i class="fas fa-bolt"></i> Digital Transformation</span>
                                         <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
                                     </div>
-                                    <div class="service-item" data-category="enterprise">
+                                    <div class="service-item" data-category="enterprise" onclick="showServiceModal('enterprise')">
                                         <span><i class="fas fa-cube"></i> Enterprise Applications</span>
                                         <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
                                     </div>
-                                    <div class="service-item" data-category="workforce">
+                                    <div class="service-item" data-category="workforce" onclick="showServiceModal('workforce')">
                                         <span><i class="fas fa-users"></i> IT Workforce Solutions</span>
                                         <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
                                     </div>
@@ -691,6 +822,16 @@
         </div>
     </section>
 
+    <!-- Service Modal Overlay -->
+    <div class="modal-overlay" id="serviceModalOverlay">
+        <div class="service-modal">
+            <span class="close-modal" onclick="closeServiceModal()">&times;</span>
+            <div id="modalContent">
+                <!-- Dynamic Content -->
+            </div>
+        </div>
+    </div>
+
     <footer>
         <div class="container">
             <div class="footer-grid">
@@ -845,6 +986,207 @@
                 `).join('');
             });
         });
+
+        // Full Service Content Object
+        const serviceDetails = {
+            cyber: {
+                title: 'Cybersecurity',
+                desc: 'In a world of escalating cyber threats, one breach can cost millions. We help organizations proactively identify vulnerabilities, build resilient defenses, and respond to incidents before they become business-ending events.',
+                useCases: [
+                    {
+                        title: 'Stopping a Ransomware Attack',
+                        prob: 'A manufacturing company experienced repeated malware causing production stoppages costing $200K per incident.',
+                        sol: 'Deployed 24/7 MDR solution, network micro-segmentation, and tabletop response exercises.',
+                        impact: 'Zero incidents in 18 months. Detection time reduced from 72h to under 4h. Insurance premiums dropped 22%.'
+                    },
+                    {
+                        title: 'PCI-DSS Compliance Achievement',
+                        prob: 'National retail chain faced $100K+ monthly fines due to critical cardholder data gaps.',
+                        sol: 'Full gap assessment, CDE architecture redesign, and tokenization implementation.',
+                        impact: 'Full Level 1 compliance in 11 weeks. Audit passed with zero findings.'
+                    },
+                    {
+                        title: 'Securing Patient Data',
+                        prob: 'Hospital network had 47 legacy apps with vulnerabilities. Phishing compromised 8,000 patient records.',
+                        sol: 'Vulnerability assessment, MFA enforcement, and AI-powered phishing detection.',
+                        impact: 'Phishing click rate dropped 23% to 2%. Zero HIPAA breaches in 24 months.'
+                    }
+                ],
+                industries: ['Banking & Financial Services', 'Healthcare & Life Sciences', 'Retail & E-Commerce', 'Manufacturing', 'Government & Public Sector', 'Telecom', 'Energy & Utilities'],
+                why: [
+                    { h: 'Threat Intelligence-Driven', p: 'We leverage real-time global feeds to prioritize defenses where your actual risk is highest.' },
+                    { h: 'Compliance & Security Together', p: 'We integrate HIPAA, PCI-DSS, ISO 27001, DORA into your architecture from day one.' },
+                    { h: 'Vendor-Neutral Expertise', p: 'We select the tools right for your budget and risk profile, not a specific vendor.' },
+                    { h: 'Business Continuity Focus', p: 'We protect operations without slowing them down, tying security to business outcomes.' }
+                ]
+            },
+            data: {
+                title: 'Data & AI Services',
+                desc: 'Your data is your most valuable business asset — but only if you can trust it and act on it intelligently. We build foundations that transform raw data into competitive advantage.',
+                useCases: [
+                    {
+                        title: 'Predicting Customer Churn',
+                        prob: 'Telecom provider losing 12% subscribers annually with no advance warning.',
+                        sol: 'Churn prediction model using behavioral data and support history triggering automated retention.',
+                        impact: 'Churn reduced by 34%. CLV increased by $42 per subscriber.'
+                    },
+                    {
+                        title: 'Unified Analytics Platform',
+                        prob: 'Conglomerate with 14 business units on siloed systems. Reporting took 3 weeks.',
+                        sol: 'Cloud data lakehouse on Azure with unified data model and real-time Power BI dashboards.',
+                        impact: 'Reporting cycle reduced from 3 weeks to 2 hours. Accuracy improved to 99.2%.'
+                    },
+                    {
+                        title: 'Generative AI Knowledge Asst',
+                        prob: 'Firm employees spent 2.3 hours/day searching 12 years of project documentation.',
+                        sol: 'Secure Enterprise GenAI assistant using RAG architecture on existing repositories.',
+                        impact: 'Information retrieval time reduced by 78%. Productivity gained 1.4h/day.'
+                    }
+                ],
+                industries: ['Banking & Insurance', 'Retail & FMCG', 'Healthcare & Pharma', 'Telecom', 'Logistics', 'Public Sector'],
+                why: [
+                    { h: 'Business Outcome Contracts', p: 'We define measurable KPIs before starting and structure engagements around delivering them.' },
+                    { h: 'Production-Ready Delivery', p: 'We go beyond proof-of-concept, delivering integrated solutions maintained for performance.' },
+                    { h: 'Responsible AI Framework', p: 'We build explainable AI with bias detection and data governance built in.' },
+                    { h: 'Cloud-Agnostic Expertise', p: 'We work across AWS, Azure, and GCP to select the right platform for your scale.' }
+                ]
+            },
+            digital: {
+                title: 'Digital Transformation',
+                desc: 'Digital transformation is fundamentally changing how your business creates value. We reimagine processes and modernize legacy systems to make you faster and leaner.',
+                useCases: [
+                    {
+                        title: 'Modernizing Core Banking',
+                        prob: '20-year-old monolithic platform. New product launches took 9-12 months.',
+                        sol: 'Phased strangler-fig modernization with cloud-native architecture and DevOps.',
+                        impact: 'Time-to-market reduced to 6 weeks. Downtime reduced by 91%.'
+                    },
+                    {
+                        title: 'Digitizing Claims Process',
+                        prob: '85% manual paper forms. Average resolution was 28 days at $186/claim.',
+                        sol: 'Digital claims portal with mobile upload and OCR/NLP extraction.',
+                        impact: 'Resolution time reduced to 4.2 days. Cost reduced to $47 (75% saving).'
+                    }
+                ],
+                industries: ['Banking', 'Insurance', 'Healthcare', 'Retail', 'Utilities', 'Logistics', 'Education'],
+                why: [
+                    { h: 'Strategy Before Technology', p: 'We start with your business model and customer journeys, not a vendor recommendation.' },
+                    { h: 'Change Management Built In', p: 'We embed leadership alignment and workforce enablement into every engagement.' },
+                    { h: 'Phased, Measurable Delivery', p: 'We break transformation into 90-day sprints with clear milestones.' },
+                    { h: 'Legacy Modernization Mastery', p: 'We modernize complex systems without disruption, protecting your future.' }
+                ]
+            },
+            enterprise: {
+                title: 'Enterprise Applications',
+                desc: 'The operational backbone of your business. We implement and optimize ERP, CRM, and HRMS platforms that your business can actually rely on.',
+                useCases: [
+                    {
+                        title: 'SAP Implementation Rescue',
+                        prob: 'Failed $4.2M project, 11 months behind budget with user rejection.',
+                        sol: 'Rapid rescue assessment, restructured governance, and core module reconfiguration.',
+                        impact: 'Live in 14 weeks. User adoption 87%. Close cycle reduced to 4 days.'
+                    },
+                    {
+                        title: 'Global HRMS Unification',
+                        prob: 'Professional services firm on 6 legacy HR systems across 6 countries.',
+                        sol: 'Global Workday HCM implementation with unified reporting and self-service.',
+                        impact: 'Admin effort reduced 52%. Payroll processing cut from 5 days to 1.'
+                    }
+                ],
+                industries: ['Manufacturing', 'Professional Services', 'Financial Services', 'Retail', 'SaaS', 'Public Sector'],
+                why: [
+                    { h: 'Platform-Certified Expertise', p: 'Active certifications across SAP, Oracle, Salesforce, Workday, and Microsoft.' },
+                    { h: 'Business Process First', p: 'We redesign workflows first, then configure software for maximum improvement.' },
+                    { h: 'Post Go-Live Commitment', p: 'Hypercare and optimization reviews for 12 months post-live as standard.' },
+                    { h: 'Fixed-Price Rescue', p: 'Predictable rescue engagements for projects that have gone off track.' }
+                ]
+            },
+            workforce: {
+                title: 'IT Workforce Solutions',
+                desc: 'Access pre-vetted, highly skilled IT professionals across all technology domains — from project augmentation to managed teams.',
+                useCases: [
+                    {
+                        title: 'Scaling Cloud Migration',
+                        prob: 'Needed to scale team from 3 to 22 engineers in 6 weeks for critical timeline.',
+                        sol: 'Deployed 19 pre-vetted AWS/Azure engineers within 6 weeks.',
+                        impact: 'Timeline met. Cost 38% lower than permanent hires. Zero recruitment fees.'
+                    },
+                    {
+                        title: 'Offshore Development Center',
+                        prob: 'UK firm needed 45 developers fast but building locally was 2.8x budget.',
+                        sol: 'Built and managed a dedicated ODC in India with full HR and governance.',
+                        impact: 'Team operational in 16 weeks. Costs 62% lower. Velocity increased 3x.'
+                    }
+                ],
+                industries: ['Financial Services', 'Healthcare', 'SaaS', 'Retail', 'Telecom', 'Professional Services'],
+                why: [
+                    { h: 'Pre-Vetted Talent', p: 'Technically assessed and background-verified professionals ready for interview.' },
+                    { h: 'Flexible Engagement', p: 'Single contractors to fractional C-suite leadership structured around your need.' },
+                    { h: 'Retention-Focused', p: 'Career pathways and benefits that keep talent productive and committed.' },
+                    { h: '120+ Tech Specializations', p: 'Coverage from COBOL to Generative AI and cloud-native architectures.' }
+                ]
+            }
+        };
+
+        function showServiceModal(key) {
+            const data = serviceDetails[key];
+            const modal = document.getElementById('serviceModalOverlay');
+            const content = document.getElementById('modalContent');
+
+            content.innerHTML = `
+                <div class="modal-header">
+                    <h2>${data.title}</h2>
+                    <p class="modal-desc">${data.desc}</p>
+                </div>
+                
+                <h3 style="color: var(--text-dark); margin-bottom: 20px;">Use Cases</h3>
+                <div class="use-case-grid">
+                    ${data.useCases.map(uc => `
+                        <div class="use-case-card">
+                            <h4>${uc.title}</h4>
+                            <div class="uc-section"><span class="uc-label">Business Problem:</span> ${uc.prob}</div>
+                            <div class="uc-section"><span class="uc-label">Solution Provided:</span> ${uc.sol}</div>
+                            <div class="uc-section"><span class="uc-label">Business Impact:</span> ${uc.impact}</div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="industry-tags">
+                    ${data.industries.map(ind => `<span class="ind-tag">${ind}</span>`).join('')}
+                </div>
+
+                <h3 style="color: var(--text-dark); text-align: center; margin-top: 40px;">Why Choose Our ${data.title} Practice</h3>
+                <div class="why-modal-grid">
+                    ${data.why.map(w => `
+                        <div class="why-modal-item">
+                            <h4>${w.h}</h4>
+                            <p>${w.p}</p>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div style="text-align: center; margin-top: 50px;">
+                    <p style="margin-bottom: 20px; color: #666;">Is your organization ready? Schedule a free assessment today.</p>
+                    <a href="#contact" class="btn btn-red" onclick="closeServiceModal()">Contact Our Experts Today &rarr;</a>
+                </div>
+            `;
+
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent scroll
+        }
+
+        function closeServiceModal() {
+            document.getElementById('serviceModalOverlay').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close on click outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('serviceModalOverlay');
+            if (event.target == modal) {
+                closeServiceModal();
+            }
+        }
 
         window.addEventListener('DOMContentLoaded', fetchDynamicContent);
     </script>
