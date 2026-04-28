@@ -4,9 +4,10 @@
   "description": "Unified entry point for Keinen Corp",
   "scripts": {
     "install:all": "npm install && cd client && npm install && cd ../server && npm install",
-    "client": "cd client && npm run dev",
+    "client": "cd client && npm start",
     "server": "cd server && npm run dev",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "admin": "cd admin_source && npm run dev",
+    "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run admin\"",
     "start": "node server/index.js"
   },
   "devDependencies": {

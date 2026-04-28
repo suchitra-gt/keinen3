@@ -251,4 +251,26 @@ window.onclick = function(event) {
     }
 };
 
-window.addEventListener('DOMContentLoaded', fetchDynamicContent);
+// Visit Tracking
+async function trackVisit() {
+    try {
+        const lastVisit = localStorage.getItem('keinen_last_visit');
+        const now = new Date().getTime();
+        let isUnique = false;
+
+        // If no visit in last 24 hours, consider unique
+        if (!lastVisit || (now - parseInt(lastVisit)) > 24 * 60 * 60 * 1000) {
+            isUnique = true;
+            localStorage.setItem('keinen_last_visit', now.toString());
+        }
+
+        await fetch(`http://localhost:5001/api/track-visit?unique=${isUnique}`);
+    } catch (err) {
+        console.error('Failed to track visit:', err);
+    }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    fetchDynamicContent();
+    trackVisit();
+});
