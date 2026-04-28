@@ -112,12 +112,15 @@ if (serviceItems.length > 0) {
             `).join('');
         });
 
-        item.addEventListener('click', () => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent any default link behavior
             const cat = item.dataset.category;
-            // If we are on index.html or root, open instantly
-            if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || !window.location.pathname.includes('.html')) {
+            
+            // Always try to show modal if we are on index.html or the homepage
+            if (typeof showServiceModal === 'function' && document.getElementById('serviceModalOverlay')) {
                 showServiceModal(cat);
             } else {
+                // Fallback for other pages
                 window.location.href = `index.html#${cat}`;
             }
         });
@@ -216,13 +219,14 @@ const serviceDetails = {
     }
 };
 
-window.showServiceModal = function(key) {
-    const data = serviceDetails[key];
+window.showServiceModal = (category) => {
     const modal = document.getElementById('serviceModalOverlay');
-    const content = document.getElementById('modalContent');
-    if (!modal || !content) return;
+    const modalContent = document.getElementById('modalContent');
+    const data = serviceDetails[category];
+    
+    if (!modal || !modalContent || !data) return;
 
-    content.innerHTML = `
+    modalContent.innerHTML = `
         <div class="modal-header">
             <h2>${data.title}</h2>
             <p class="modal-desc">${data.desc}</p>
@@ -274,10 +278,4 @@ window.onclick = function(event) {
 
 window.addEventListener('DOMContentLoaded', () => {
     fetchDynamicContent();
-    
-    // Auto-open if hash exists (works for index.html or solutions.html)
-    const hash = window.location.hash.substring(1);
-    if (hash && serviceDetails[hash]) {
-        setTimeout(() => showServiceModal(hash), 100); // Faster trigger
-    }
 });
