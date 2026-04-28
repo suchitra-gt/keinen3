@@ -77,7 +77,7 @@ const Home = () => {
                     </div>
                 </motion.div>
                 <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}>
-                    <img src="/about_tech_architects_red_1777267955851.png" alt="Tech Architects" style={{ width: '100%', border-radius: '12px', box-shadow: '0 30px 60px rgba(0,0,0,0.1)' }} />
+                    <img src="/about_tech_architects_red_1777267955851.png" alt="Tech Architects" style={{ width: '100%', borderRadius: '12px', boxShadow: '0 30px 60px rgba(0,0,0,0.1)' }} />
                 </motion.div>
             </div>
         </div>

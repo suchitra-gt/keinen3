@@ -3,11 +3,8 @@
   "version": "1.0.0",
   "description": "Unified entry point for Keinen Corp",
   "scripts": {
-    "install:all": "npm install && cd client && npm install && cd ../server && npm install",
-    "client": "cd client && npm run dev",
-    "server": "cd server && npm run dev",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "start": "node server/index.js"
+    "dev": "npx browser-sync start --server --files \"*.html, css/*.css, js/*.js\" --port 5501",
+    "start": "npx browser-sync start --server --files \"*.html, css/*.css, js/*.js\" --port 5501"
   },
   "devDependencies": {
     "concurrently": "^8.0.1"

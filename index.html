@@ -6,24 +6,29 @@
     <title>Keinen Corp | Architecting Digital Ecosystems</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        /* Floating Animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        .float-anim { animation: float 6s ease-in-out infinite; }
+        
+        /* Pulse Animation for Buttons */
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(229, 57, 53, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0); }
+        }
+        .pulse-btn { animation: pulse-red 2s infinite; }
+    </style>
 </head>
 <body>
     <div id="scroll-progress"></div>
 
-    <div class="top-header">
-        <div class="container">
-            <div class="top-header-content">
-                <div class="contact-items">
-                    <span><i class="fas fa-envelope"></i> info@keinen.in</span>
-                    <span><i class="fas fa-phone"></i> +91 80415 01718</span>
-                </div>
-                <div class="social-items">
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                </div>
-            </div>
-        </div>
-    </div>
+
     <header id="main-header">
         <div class="container">
             <nav>
@@ -35,7 +40,28 @@
                         <li class="dot-sep"></li>
                         <li><a href="about.html">About</a></li>
                         <li class="dot-sep"></li>
-                        <li><a href="solutions.html">Services</a></li>
+                        <li class="has-mega-menu"><a href="solutions.html" id="solutions-nav-link">Solutions</a>
+                            <div class="mega-menu-dropdown">
+                                <div class="mega-col">
+                                    <h5>OUR SERVICES</h5>
+                                    <ul class="service-list">
+                                        <li class="service-item active" data-category="cyber"><i class="fas fa-shield-alt"></i> Cybersecurity <i class="fas fa-chevron-right" style="margin-left:auto;font-size:0.7rem"></i></li>
+                                        <li class="service-item" data-category="data"><i class="fas fa-brain"></i> Data &amp; AI Services <i class="fas fa-chevron-right" style="margin-left:auto;font-size:0.7rem"></i></li>
+                                        <li class="service-item" data-category="digital"><i class="fas fa-rocket"></i> Digital Transformation <i class="fas fa-chevron-right" style="margin-left:auto;font-size:0.7rem"></i></li>
+                                        <li class="service-item" data-category="enterprise"><i class="fas fa-cogs"></i> Enterprise Applications <i class="fas fa-chevron-right" style="margin-left:auto;font-size:0.7rem"></i></li>
+                                        <li class="service-item" data-category="workforce"><i class="fas fa-users"></i> IT Workforce Solutions <i class="fas fa-chevron-right" style="margin-left:auto;font-size:0.7rem"></i></li>
+                                    </ul>
+                                </div>
+                                <div class="mega-col">
+                                    <h5>SUB SERVICES</h5>
+                                    <ul class="sub-service-list" id="sub-service-list"></ul>
+                                </div>
+                                <div class="mega-col" style="border-right:none">
+                                    <h5>RECOMMENDED SOLUTIONS</h5>
+                                    <div id="solution-list"></div>
+                                </div>
+                            </div>
+                        </li>
                         <li class="dot-sep"></li>
                         <li><a href="industries.html">Industries</a></li>
                         <li class="dot-sep"></li>
@@ -76,12 +102,12 @@
         </div>
         <div class="hero-overlay"></div>
         <div class="container">
-            <div class="hidden" style="max-width: 850px;">
+            <div data-aos="fade-up" style="max-width: 850px;">
                 <h4 style="text-transform: uppercase; letter-spacing: 4px; margin-bottom: 1.5rem; color: var(--primary-red); font-weight: 700; background: rgba(229, 57, 53, 0.1); display: inline-block; padding: 5px 15px; border-radius: 4px;">Global Technology Architects</h4>
                 <h1>Architecting Digital <span style="color: var(--primary-red);">Ecosystems</span></h1>
                 <p>We design and deploy integrated IT, OT, and Security ecosystems that don't just connect your enterprise — they make it intelligent, resilient, and ready for the next era.</p>
                 <div style="display: flex; gap: 1.5rem;">
-                    <a href="solutions.html" class="btn btn-red" style="padding: 1.2rem 2.5rem;">Explore Solutions &rarr;</a>
+                    <a href="solutions.html" class="btn btn-red pulse-btn" style="padding: 1.2rem 2.5rem;">Explore Solutions &rarr;</a>
                     <a href="#contact" class="btn" style="border: 2px solid white; color: white; padding: 1.2rem 2.5rem;">Get a Consultation</a>
                 </div>
             </div>
@@ -91,7 +117,7 @@
     <section class="section-padding" id="about">
         <div class="container">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
-                <div class="hidden">
+                <div data-aos="fade-right">
                     <h4 style="color: var(--primary-red); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem;">Who We Are</h4>
                     <h2 style="font-size: 3rem; margin-bottom: 1.5rem; line-height: 1.2;">Architects of the <span style="color: var(--primary-red);">Next</span> Era</h2>
                     <p style="font-size: 1.1rem; margin-bottom: 2rem;">Keinen Corp is a leading technology consultancy focused on building integrated IT, OT, and security ecosystems. We don't just connect businesses; we make them intelligent.</p>
@@ -106,11 +132,11 @@
                         </div>
                     </div>
                     <div style="margin-top: 40px;">
-                        <a href="about.html" class="btn btn-red">Our Full Story &rarr;</a>
+                        <a href="about.html" class="btn btn-red pulse-btn">Our Full Story &rarr;</a>
                     </div>
                 </div>
-                <div class="hidden">
-                    <img src="about_tech_architects_red_1777267955851.png" alt="Tech Architects" style="width: 100%; border-radius: 12px; box-shadow: 0 30px 60px rgba(0,0,0,0.1);">
+                <div data-aos="fade-left">
+                    <img src="about_tech_architects_red_1777267955851.png" alt="Tech Architects" class="float-anim" style="width: 100%; border-radius: 12px; box-shadow: 0 30px 60px rgba(0,0,0,0.1);">
                 </div>
             </div>
         </div>
@@ -128,25 +154,25 @@
                 <p style="font-size: 1.1rem; color: var(--text-muted); max-width: 700px; margin: 0 auto;">Advanced technology implementations for complex business challenges.</p>
             </div>
             <div class="pillar-grid">
-                <div class="pillar-card hidden" onclick="showServiceModal('cyber')">
+                <div class="pillar-card" data-aos="flip-left" data-aos-delay="100" onclick="showServiceModal('cyber')">
                     <div class="pillar-num">01</div>
                     <h3 style="color: var(--primary-red);">Cybersecurity</h3>
                     <p>Proactive defense and resilient architectures for a world of escalating threats.</p>
                     <div class="pillar-tags"><span class="pillar-tag">MDR</span> <span class="pillar-tag">Zero Trust</span></div>
                 </div>
-                <div class="pillar-card hidden" onclick="showServiceModal('data')">
+                <div class="pillar-card" data-aos="flip-left" data-aos-delay="200" onclick="showServiceModal('data')">
                     <div class="pillar-num">02</div>
                     <h3 style="color: var(--primary-red);">Data & AI</h3>
                     <p>Transforming raw data into competitive advantage through production-grade AI.</p>
                     <div class="pillar-tags"><span class="pillar-tag">GenAI</span> <span class="pillar-tag">Analytics</span></div>
                 </div>
-                <div class="pillar-card hidden" onclick="showServiceModal('digital')">
+                <div class="pillar-card" data-aos="flip-left" data-aos-delay="300" onclick="showServiceModal('digital')">
                     <div class="pillar-num">03</div>
                     <h3 style="color: var(--primary-red);">Digital Transformation</h3>
                     <p>Modernizing legacy systems and reimagining processes for agility.</p>
                     <div class="pillar-tags"><span class="pillar-tag">Cloud-Native</span> <span class="pillar-tag">DevOps</span></div>
                 </div>
-                <div class="pillar-card hidden" onclick="showServiceModal('enterprise')">
+                <div class="pillar-card" data-aos="flip-left" data-aos-delay="400" onclick="showServiceModal('enterprise')">
                     <div class="pillar-num">04</div>
                     <h3 style="color: var(--primary-red);">Enterprise Apps</h3>
                     <p>Optimizing the operational backbone of your business through ERP and CRM.</p>
@@ -170,42 +196,42 @@
                 <h2 style="font-size: 2.5rem;" class="gradient-text">Sectors We Transform</h2>
             </div>
             <div class="sector-grid">
-                <div class="sector-card hidden">
+                <div class="sector-card" data-aos="zoom-in">
                     <img src="sector_manufacturing_red_1777267582086.png" alt="Manufacturing & Process">
                     <h3>Manufacturing & Process</h3>
                     <p>ISA-95 architectures, MES-SCADA integration, OEE intelligence, predictive maintenance, full Industry X.0 transformation.</p>
                 </div>
-                <div class="sector-card hidden">
+                <div class="sector-card" data-aos="zoom-in">
                     <img src="sector_energy_red_1777267533087.png" alt="Oil & Gas">
                     <h3>Oil & Gas</h3>
                     <p>ATEX/IECEx certified for explosive hazardous areas. Safety Instrumented Systems (SIS), SIL assessment.</p>
                 </div>
-                <div class="sector-card hidden">
+                <div class="sector-card" data-aos="zoom-in">
                     <img src="sector_pharma_red_1777267596457.png" alt="Pharmaceuticals & Biotech">
                     <h3>Pharmaceuticals & Biotech</h3>
                     <p>21 CFR Part 11 compliant data systems. GAMP 5 validated automation. EBR integration.</p>
                 </div>
-                <div class="sector-card hidden">
+                <div class="sector-card" data-aos="zoom-in">
                     <img src="sector_fmcg.png" alt="FMCG & Packaging">
                     <h3>FMCG & Packaging</h3>
                     <p>High-speed packaging line monitoring, OEE optimisation. AI-powered visual quality inspection.</p>
                 </div>
-                <div class="sector-card hidden">
+                <div class="sector-card" data-aos="zoom-in">
                     <img src="sector_healthcare.png" alt="Healthcare Facilities">
                     <h3>Healthcare Facilities</h3>
                     <p>EMR/HIS integration with clinical networks. Medical device networking (IEC 80001). HIPAA-aligned data security.</p>
                 </div>
-                <div class="sector-card hidden">
+                <div class="sector-card" data-aos="zoom-in">
                     <img src="sector_automotive_red_1777267613718.png" alt="Automotive Assembly">
                     <h3>Automotive Assembly</h3>
                     <p>Robotic welding cell control. AGV/AMR logistics network design. JIT system connectivity.</p>
                 </div>
-                <div class="sector-card hidden">
+                <div class="sector-card" data-aos="zoom-in">
                     <img src="sector_fpso.png" alt="FPSO, Marine & Offshore">
                     <h3>FPSO, Marine & Offshore</h3>
                     <p>Marine-grade certified systems for harsh/hazardous environments. Offshore platform control and automation.</p>
                 </div>
-                <div class="sector-card hidden">
+                <div class="sector-card" data-aos="zoom-in">
                     <img src="sector_datacenter_red_1777267630948.png" alt="Enterprise Campuses">
                     <h3>Enterprise Campuses & Commercial RE</h3>
                     <p>Campus-wide network infrastructure. Tier-rated on-premise data center design/build. ITIL-aligned operations.</p>
@@ -217,27 +243,32 @@
         </div>
     </section>
 
-    <section class="section-padding" id="why-us">
+    <section class="section-padding section-with-video" id="why-us">
+        <div class="bg-video-container" style="opacity: 0.05;">
+            <video autoplay muted loop playsinline>
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-data-center-server-room-rack-2739-large.mp4" type="video/mp4">
+            </video>
+        </div>
         <div class="container">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
-                <div class="hidden">
+                <div data-aos="fade-right">
                     <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--text-dark);">Why <span style="color: var(--primary-red);">Keinen</span>?</h2>
                     <ul style="list-style: none;">
-                        <li style="margin-bottom: 25px; display: flex; gap: 15px;">
+                        <li style="margin-bottom: 25px; display: flex; gap: 15px;" data-aos="fade-up" data-aos-delay="100">
                             <i class="fas fa-check-circle" style="color: var(--primary-red); font-size: 1.5rem;"></i>
                             <div>
                                 <h4 style="margin-bottom: 5px; color: var(--text-dark);">End-to-End Capability</h4>
                                 <p style="color: var(--text-muted);">From strategic roadmaps to 24/7 managed operations.</p>
                             </div>
                         </li>
-                        <li style="margin-bottom: 25px; display: flex; gap: 15px;">
+                        <li style="margin-bottom: 25px; display: flex; gap: 15px;" data-aos="fade-up" data-aos-delay="200">
                             <i class="fas fa-check-circle" style="color: var(--primary-red); font-size: 1.5rem;"></i>
                             <div>
                                 <h4 style="margin-bottom: 5px; color: var(--text-dark);">Domain Specific Depth</h4>
                                 <p style="color: var(--text-muted);">Architects who understand your industry's specific pressures.</p>
                             </div>
                         </li>
-                        <li style="margin-bottom: 25px; display: flex; gap: 15px;">
+                        <li style="margin-bottom: 25px; display: flex; gap: 15px;" data-aos="fade-up" data-aos-delay="300">
                             <i class="fas fa-check-circle" style="color: var(--primary-red); font-size: 1.5rem;"></i>
                             <div>
                                 <h4 style="margin-bottom: 5px; color: var(--text-dark);">Vendor Agnostic Approach</h4>
@@ -245,10 +276,10 @@
                             </div>
                         </li>
                     </ul>
-                    <a href="why-us.html" class="btn btn-red">Discover Our Approach</a>
+                    <a href="why-us.html" class="btn btn-red pulse-btn">Discover Our Approach</a>
                 </div>
-                <div class="hidden">
-                    <img src="about_tech_architects_red_1777267955851.png" alt="Expertise" style="width: 100%; border-radius: 12px;">
+                <div data-aos="fade-left">
+                    <img src="why_keinen_premium.png" alt="Keinen Expertise" class="float-anim" style="width: 100%; border-radius: 12px; box-shadow: 0 30px 60px rgba(0,0,0,0.15);">
                 </div>
             </div>
         </div>
@@ -289,43 +320,92 @@
         </div>
     </div>
 
-    <section class="site-map-section">
-        <div class="map-container">
-            <div class="map-row">
-                <a href="index.html" class="map-link"><span class="map-dot"></span> Home</a>
-                <a href="about.html" class="map-link"><span class="map-dot"></span> About</a>
-                <a href="solutions.html" class="map-link"><span class="map-dot"></span> Services</a>
-                <a href="industries.html" class="map-link"><span class="map-dot"></span> Industries</a>
-                <a href="#" class="map-link"><span class="map-dot"></span> Technology</a>
-                <a href="#" class="map-link"><span class="map-dot"></span> Products</a>
-                <a href="#" class="map-link"><span class="map-dot"></span> Blog/News</a>
-                <a href="#" class="map-link"><span class="map-dot"></span> Blog Detail</a>
-                <a href="#" class="map-link"><span class="map-dot"></span> Reviews/Testimonials</a>
+
+
+    <main>
+        <!-- Solutions Section Integrated for Speed -->
+        <section class="section-padding" id="solutions-section">
+            <div class="container">
+                <div style="text-align: center; margin-bottom: 60px;">
+                    <h4 style="color: var(--primary-red); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem;">Expertise</h4>
+                    <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Core <span style="color: var(--primary-red);">Solutions</span></h2>
+                    <p style="color: var(--text-muted); max-width: 800px; margin: 0 auto;">Click on any solution below to explore in-depth use cases and business impacts instantly.</p>
+                </div>
+
+                <div class="pillar-grid">
+                    <div class="pillar-card" onclick="showServiceModal('cyber')">
+                        <div class="pillar-num">01</div>
+                        <h3 style="color: var(--primary-red);">Cybersecurity</h3>
+                        <p>Protecting your people, your data, and your reputation through proactive defense.</p>
+                        <div class="pillar-tags"><span class="pillar-tag">MDR</span><span class="pillar-tag">Zero Trust</span></div>
+                    </div>
+                    <div class="pillar-card" onclick="showServiceModal('data')">
+                        <div class="pillar-num">02</div>
+                        <h3 style="color: var(--primary-red);">Data & AI</h3>
+                        <p>Turning raw data into decisions through modern lakehouse architectures.</p>
+                        <div class="pillar-tags"><span class="pillar-tag">Big Data</span><span class="pillar-tag">GenAI</span></div>
+                    </div>
+                    <div class="pillar-card" onclick="showServiceModal('digital')">
+                        <div class="pillar-num">03</div>
+                        <h3 style="color: var(--primary-red);">Digital Transformation</h3>
+                        <p>Reimagining processes and modernizing legacy systems.</p>
+                        <div class="pillar-tags"><span class="pillar-tag">Cloud-Native</span><span class="pillar-tag">DevOps</span></div>
+                    </div>
+                    <div class="pillar-card" onclick="showServiceModal('enterprise')">
+                        <div class="pillar-num">04</div>
+                        <h3 style="color: var(--primary-red);">Enterprise Apps</h3>
+                        <p>Optimizing your backbone through ERP, CRM, and HCM implementations.</p>
+                        <div class="pillar-tags"><span class="pillar-tag">SAP/Oracle</span><span class="pillar-tag">Salesforce</span></div>
+                    </div>
+                    <div class="pillar-card" onclick="showServiceModal('workforce')">
+                        <div class="pillar-num">05</div>
+                        <h3 style="color: var(--primary-red);">IT Workforce</h3>
+                        <p>Accessing pre-vetted professionals for project success.</p>
+                        <div class="pillar-tags"><span class="pillar-tag">Managed Teams</span><span class="pillar-tag">Staffing</span></div>
+                    </div>
+                </div>
             </div>
-            <div class="map-row">
-                <a href="#" class="map-link"><span class="map-dot"></span> FAQ</a>
-                <a href="#" class="map-link"><span class="map-dot"></span> Careers</a>
-                <a href="why-us.html" class="map-link"><span class="map-dot"></span> Why Us</a>
-                <a href="#" class="map-link"><span class="map-dot"></span> Portfolio</a>
-                <a href="#" class="map-link"><span class="map-dot"></span> Privacy Policy</a>
-                <a href="#" class="map-link"><span class="map-dot"></span> Term of Service</a>
-                <a href="contact.html" class="map-link"><span class="map-dot"></span> Contact</a>
-            </div>
-        </div>
-    </section>
+        </section>
+    </main>
+
+
 
     <footer>
         <div class="container">
             <div class="footer-grid">
                 <div>
-                    <a href="index.html" class="footer-logo"><img src="logo.png" alt="Keinen Corp" style="height: 60px;"></a>
+                    <a href="index.html" class="footer-logo"><img src="logo.png" alt="Keinen Corp" style="height: 90px;"></a>
                     <p>Architecting the digital ecosystems of tomorrow. We specialize in enterprise IT, OT, security, and digital transformation.</p>
                 </div>
                 <div class="footer-links">
                     <h4>Solutions</h4>
                     <ul>
-                        <li><a href="solutions.html">Cybersecurity</a></li>
-                        <li><a href="solutions.html">Data & AI</a></li>
+                        <li class="has-mega-menu"><a href="#solutions-section" id="solutions-nav-link">Solutions <i class="fas fa-chevron-down" style="font-size: 0.6rem; margin-left: 5px;"></i></a>
+                            <div class="mega-menu-dropdown">
+                                <div class="mega-col">
+                                    <h5>OUR SERVICES</h5>
+                                    <ul class="service-list">
+                                        <li class="service-item active" data-category="cyber"><i class="fas fa-shield-alt"></i> Cybersecurity <i class="fas fa-chevron-right" style="margin-left:auto;font-size:0.7rem"></i></li>
+                                        <li class="service-item" data-category="data"><i class="fas fa-brain"></i> Data & AI Services <i class="fas fa-chevron-right" style="margin-left:auto;font-size:0.7rem"></i></li>
+                                        <li class="service-item" data-category="digital"><i class="fas fa-rocket"></i> Digital Transformation <i class="fas fa-chevron-right" style="margin-left:auto;font-size:0.7rem"></i></li>
+                                        <li class="service-item" data-category="enterprise"><i class="fas fa-cogs"></i> Enterprise Applications <i class="fas fa-chevron-right" style="margin-left:auto;font-size:0.7rem"></i></li>
+                                        <li class="service-item" data-category="workforce"><i class="fas fa-users"></i> IT Workforce Solutions <i class="fas fa-chevron-right" style="margin-left:auto;font-size:0.7rem"></i></li>
+                                    </ul>
+                                </div>
+                                <div class="mega-col">
+                                    <h5>SUB SERVICES</h5>
+                                    <ul class="sub-service-list" id="sub-service-list">
+                                        <!-- Dynamically populated by JS -->
+                                    </ul>
+                                </div>
+                                <div class="mega-col" style="border-right:none">
+                                    <h5>RECOMMENDED SOLUTIONS</h5>
+                                    <div id="solution-list">
+                                        <!-- Dynamically populated by JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
                         <li><a href="solutions.html">Digital Transformation</a></li>
                         <li><a href="solutions.html">Enterprise Apps</a></li>
                     </ul>
@@ -363,5 +443,13 @@
     </a>
 
     <script src="js/main.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+    </script>
 </body>
 </html>
