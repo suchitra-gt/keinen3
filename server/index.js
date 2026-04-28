@@ -4,7 +4,10 @@ require('dotenv').config();
 const db = require('./db');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002', 'http://localhost:3003', 'http://127.0.0.1:5502', 'http://localhost:5502'],
+    credentials: true
+}));
 app.use(express.json());
 
 // GET all services (summary cards)
@@ -65,11 +68,38 @@ const initReviewsDb = async () => {
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         )
     `;
+    const createVisitorsTable = `
+        CREATE TABLE IF NOT EXISTS visitors (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            ip_address VARCHAR(45),
+            session_id VARCHAR(255),
+            page_visited VARCHAR(255),
+            visited_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    `;
+    const createAdminTable = `
+        CREATE TABLE IF NOT EXISTS admin_users (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            username VARCHAR(255) UNIQUE NOT NULL,
+            password VARCHAR(255) NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    `;
     try {
         await db.query(createReviewsTable);
+        await db.query(createVisitorsTable);
+        await db.query(createAdminTable);
+        
+        // Seed initial admin if not exists
+        const [admins] = await db.query('SELECT * FROM admin_users WHERE username = ?', ['admin']);
+        if (admins.length === 0) {
+            await db.query('INSERT INTO admin_users (username, password) VALUES (?, ?)', ['admin', 'root']);
+            console.log("Initial admin user 'admin/root' created in database.");
+        }
+
         try { await db.query("ALTER TABLE reviews ADD COLUMN likes INT DEFAULT 0"); } catch (e) {}
     } catch (err) {
-        console.error("DB Init Error for Reviews:", err.message);
+        console.error("DB Init Error:", err.message);
     }
 };
 initReviewsDb();
@@ -134,6 +164,56 @@ app.put('/api/reviews/:id/like', async (req, res) => {
             [req.params.id]
         );
         res.json({ message: `Review ${action}d successfully` });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Visitor Tracking API
+app.post('/api/track-visit', async (req, res) => {
+    const { sessionId, page } = req.body;
+    const ip = req.ip || req.headers['x-forwarded-for'] || '0.0.0.0';
+    
+    console.log(`[TRACKING] New visit detected! Page: ${page} | Session: ${sessionId}`);
+
+    try {
+        await db.query(
+            'INSERT INTO visitors (ip_address, session_id, page_visited) VALUES (?, ?, ?)',
+            [ip, sessionId, page]
+        );
+        res.json({ success: true });
+    } catch (err) {
+        console.error(`[TRACKING ERROR] ${err.message}`);
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Admin Login API
+app.post('/api/admin/login', async (req, res) => {
+    const { username, password } = req.body;
+    try {
+        const [users] = await db.query('SELECT * FROM admin_users WHERE username = ? AND password = ?', [username, password]);
+        if (users.length > 0) {
+            res.json({ success: true, token: 'keinen-admin-session-active' });
+        } else {
+            res.status(401).json({ success: false, error: 'Invalid Operator ID or Access Code' });
+        }
+    } catch (err) {
+        res.status(500).json({ error: 'Database authentication failed' });
+    }
+});
+
+app.get('/api/analytics/visitors', async (req, res) => {
+    try {
+        const [[total]] = await db.query('SELECT COUNT(*) as count FROM visitors');
+        const [[unique]] = await db.query('SELECT COUNT(DISTINCT session_id) as count FROM visitors');
+        const [[live]] = await db.query('SELECT COUNT(DISTINCT session_id) as count FROM visitors WHERE visited_at > NOW() - INTERVAL 5 MINUTE');
+        
+        res.json({
+            total: total.count,
+            unique: unique.count,
+            live: live.count
+        });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

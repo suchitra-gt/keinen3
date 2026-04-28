@@ -6,14 +6,14 @@ const COLORS = {
   redGlow: "rgba(232, 52, 42, 0.15)",
   bg: "#0A0A0A",
   bgCard: "#111111",
-  border: "#1E1E1E",
+  border: "#222222",
   borderBright: "#2A2A2A",
   text: "#FFFFFF",
-  textMuted: "#888888",
-  textDim: "#444444",
+  textMuted: "#F0F0F0", // Almost white
+  textDim: "#CCCCCC",   // Light grey/silver
   green: "#22C55E",
   amber: "#F59E0B",
-  blue: "#3B82F6",
+  blue: "#2A9DE8",
 };
  
 const css = `
@@ -26,8 +26,8 @@ const css = `
   ::-webkit-scrollbar-track { background: #0A0A0A; }
   ::-webkit-scrollbar-thumb { background: #1E1E1E; border-radius: 2px; }
   body { background: #0A0A0A; overflow: hidden; }
-  .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 13px; border-left: 2px solid transparent; color: #888888; }
-  .nav-item:hover { background: #1E1E1E; color: #FFFFFF; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 13px; border-left: 2px solid transparent; color: ${COLORS.textDim}; }
+  .nav-item:hover { background: #1E1E1E; color: ${COLORS.text}; }
   .nav-item.active { background: rgba(232,52,42,0.15); border-left: 2px solid #E8342A; color: #E8342A; font-weight: 600; }
   .metric-card { background: #111111; border: 1px solid #1E1E1E; border-radius: 10px; padding: 16px 18px; position: relative; overflow: hidden; transition: border-color 0.2s; }
   .metric-card:hover { border-color: #E8342A; }
@@ -111,35 +111,40 @@ export default function Dashboard() {
   const [time, setTime] = useState(new Date());
   const [liveVisitors, setLiveVisitors] = useState(247);
   const [activeNav, setActiveNav] = useState("Dashboard");
-  const [stats, setStats] = useState({ total_visitors: 0, unique_visitors: 0 });
+  const [stats, setStats] = useState({ total: 0, unique: 0, live: 0 });
+  const [reviews, setReviews] = useState([]);
  
   const fetchStats = async () => {
     try {
-      const res = await fetch("http://localhost:5001/api/stats");
+      const res = await fetch("http://localhost:5000/api/analytics/visitors");
       const data = await res.json();
       setStats(data);
+      if (data.live) setLiveVisitors(data.live);
+
+      const reviewsRes = await fetch("http://localhost:5000/api/reviews");
+      const reviewsData = await reviewsRes.json();
+      setReviews(reviewsData);
     } catch (err) {
-      console.error("Failed to fetch stats:", err);
+      console.error("Failed to fetch data:", err);
     }
   };
 
   useEffect(() => {
     fetchStats();
     const t = setInterval(() => setTime(new Date()), 1000);
-    const v = setInterval(() => setLiveVisitors(p => Math.max(200, p + Math.floor(Math.random() * 5 - 2))), 3000);
-    const s = setInterval(fetchStats, 5000); // Poll backend every 5s
-    return () => { clearInterval(t); clearInterval(v); clearInterval(s); };
+    const s = setInterval(fetchStats, 5000);
+    return () => { clearInterval(t); clearInterval(s); };
   }, []);
  
   const metrics = [
-    { label: "Total website visitors",  value: stats.total_visitors, suffix: "",  trend: "+12.4%", up: true,  spark: [80,95,88,110,105,132,128,145,139,162,155,178], color: COLORS.red   },
-    { label: "Unique Visitors", value: stats.unique_visitors,  suffix: "",  trend: "+8.7%",  up: true,  spark: [40,52,47,61,58,74,69,82,78,91,87,98],          color: COLORS.blue  },
+    { label: "Total website visitors",  value: stats.total, suffix: "",  trend: "+12.4%", up: true,  spark: [80,95,88,110,105,132,128,145,139,162,155,178], color: COLORS.red   },
+    { label: "Unique Visitors", value: stats.unique,  suffix: "",  trend: "+8.7%",  up: true,  spark: [40,52,47,61,58,74,69,82,78,91,87,98],          color: COLORS.blue  },
   ];
  
   const topBarColors = [COLORS.red, COLORS.blue];
  
   const navGroups = [
-    { title: "Main",   items: [{ icon: "⬡", label: "Dashboard" }, { icon: "◈", label: "Analytics" }] },
+    { title: "Main",   items: [{ icon: "⬡", label: "Dashboard" }, { icon: "◈", label: "Analytics" }, { icon: "★", label: "Reviews" }] },
   ];
  
   return (
@@ -179,12 +184,33 @@ export default function Dashboard() {
         </div>
  
         {/* User */}
-        <div style={{ padding: 16, borderTop: `1px solid ${COLORS.border}`, display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{ width: 32, height: 32, borderRadius: "50%", background: COLORS.redGlow, border: `1px solid ${COLORS.red}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, color: COLORS.red, fontWeight: 700 }}>SA</div>
-          <div>
-            <div style={{ fontSize: 12 }}>Sys Admin</div>
-            <div style={{ fontSize: 10, color: COLORS.textDim }}>admin@keinen.io</div>
+        <div style={{ padding: 16, borderTop: `1px solid ${COLORS.border}`, display: "flex", flexDirection: "column", gap: 15 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <div style={{ width: 32, height: 32, borderRadius: "50%", background: COLORS.redGlow, border: `1px solid ${COLORS.red}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, color: COLORS.red, fontWeight: 700 }}>SA</div>
+            <div>
+              <div style={{ fontSize: 12 }}>Sys Admin</div>
+              <div style={{ fontSize: 10, color: COLORS.textDim }}>admin@keinen.io</div>
+            </div>
           </div>
+          <button 
+            onClick={() => { localStorage.removeItem('admin_token'); window.location.href='/login'; }}
+            style={{ 
+              width: '100%', 
+              background: 'transparent', 
+              border: `1px solid ${COLORS.border}`, 
+              color: COLORS.textDim, 
+              padding: '8px', 
+              borderRadius: '6px', 
+              fontSize: '11px', 
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px'
+            }}
+          >
+            TERMINATE SESSION
+          </button>
         </div>
       </div>
  
@@ -236,6 +262,40 @@ export default function Dashboard() {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Reviews Section */}
+          <div style={{ marginTop: 30 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 15 }}>
+              <h3 style={{ fontSize: 16, fontWeight: 700, letterSpacing: 1 }}>LIVE CLIENT FEEDBACK</h3>
+              <span style={{ fontSize: 11, color: COLORS.textDim }}>DATABASE SYNC: ACTIVE</span>
+            </div>
+            <div style={{ display: "grid", gap: 12 }}>
+              {reviews.length > 0 ? reviews.map((r, i) => (
+                <div key={i} style={{ background: COLORS.bgCard, border: `1px solid ${COLORS.border}`, borderRadius: 10, padding: 16, animation: "fadeSlideIn 0.3s ease-out forwards" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      <div style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(232,52,42,0.1)", color: COLORS.red, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700 }}>
+                        {r.name.charAt(0)}
+                      </div>
+                      <div>
+                        <div style={{ fontSize: 13, fontWeight: 600 }}>{r.name}</div>
+                        <div style={{ fontSize: 10, color: COLORS.textDim }}>{r.email}</div>
+                      </div>
+                    </div>
+                    <div style={{ textAlign: "right" }}>
+                      <div style={{ color: COLORS.amber, fontSize: 12 }}>{"★".repeat(r.rating)}{"☆".repeat(5-r.rating)}</div>
+                      <div style={{ fontSize: 9, color: COLORS.textDim, marginTop: 4 }}>{new Date(r.created_at).toLocaleDateString()}</div>
+                    </div>
+                  </div>
+                  <p style={{ fontSize: 12, color: COLORS.textMuted, lineHeight: 1.6 }}>"{r.comment}"</p>
+                </div>
+              )) : (
+                <div style={{ textAlign: "center", padding: 40, border: `1px dashed ${COLORS.border}`, borderRadius: 10, color: COLORS.textDim, fontSize: 12 }}>
+                  NO REVIEWS STORED IN DATABASE YET
+                </div>
+              )}
+            </div>
           </div>
  
         </div>

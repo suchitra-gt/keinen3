@@ -195,7 +195,7 @@
                 }));
 
                 try {
-                    await fetch(`http://localhost:8050/api/reviews/${reviewId}/like`, {
+                    await fetch(`http://localhost:5000/api/reviews/${reviewId}/like`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ action })
@@ -207,7 +207,7 @@
 
             const fetchReviews = async () => {
                 try {
-                    const res = await fetch('http://localhost:8050/api/reviews');
+                    const res = await fetch('http://localhost:5000/api/reviews');
                     const data = await res.json();
                     if (Array.isArray(data)) {
                         setReviews(data);
@@ -225,7 +225,7 @@
                 const email = e.target.value;
                 if (!email) return;
                 try {
-                    const res = await fetch(`http://localhost:8050/api/reviews/${email}`);
+                    const res = await fetch(`http://localhost:5000/api/reviews/${email}`);
                     if (res.ok) {
                         const existingReview = await res.json();
                         setForm({
@@ -259,7 +259,7 @@
                 }
                 setLoading(true);
                 try {
-                    const url = isEditing ? `http://localhost:8050/api/reviews/${editId}` : 'http://localhost:8050/api/reviews';
+                    const url = isEditing ? `http://localhost:5000/api/reviews/${editId}` : 'http://localhost:5000/api/reviews';
                     const method = isEditing ? 'PUT' : 'POST';
                     const res = await fetch(url, {
                         method,

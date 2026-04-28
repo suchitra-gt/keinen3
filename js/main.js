@@ -1,3 +1,29 @@
+// Visitor Tracking Logic for Static Pages (Port 5502)
+(function() {
+    let sessionId = localStorage.getItem('keinen_session_id');
+    if (!sessionId) {
+        sessionId = 'static-' + Math.random().toString(36).substr(2, 9) + '-' + Date.now();
+        localStorage.setItem('keinen_session_id', sessionId);
+    }
+
+    const trackVisit = async () => {
+        try {
+            await fetch('http://localhost:5000/api/track-visit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    sessionId,
+                    page: window.location.pathname
+                })
+            });
+            console.log('[TRACKER] Static visit recorded');
+        } catch (err) {
+            console.error('[TRACKER ERROR]', err);
+        }
+    };
+    trackVisit();
+})();
+
 // Header Scroll & Progress
 window.addEventListener('scroll', () => {
     const scrollTop = window.scrollY;

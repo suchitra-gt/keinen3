@@ -1,68 +1,129 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Lock, User, Terminal } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+    const [credentials, setCredentials] = useState({ username: '', password: '' });
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    // For demo purposes, any login works
-    localStorage.setItem('isAdminAuth', 'true');
-    navigate('/dashboard');
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setError('');
 
-  return (
-    <div className="min-h-screen flex items-center justify-center p-6">
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="glass-panel p-8 w-full max-w-md neon-glow"
-        style={{ background: 'rgba(10, 10, 15, 0.8)' }}
-      >
-        <div className="text-center mb-8">
-           <h2 className="text-4xl font-black text-white tracking-tighter uppercase mb-2">KEINEN</h2>
-           <p className="text-[11px] font-bold tracking-[0.4em] text-accent-red uppercase">BUILT ON FAITH</p>
+        try {
+            const res = await fetch('http://localhost:5000/api/admin/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(credentials)
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                localStorage.setItem('admin_token', data.token);
+                navigate('/dashboard');
+            } else {
+                setError(data.error || 'Login failed');
+            }
+        } catch (err) {
+            setError('Server connection failed');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div style={{ 
+            height: '100vh', 
+            background: '#0A0A0A', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            color: 'white',
+            fontFamily: 'monospace'
+        }}>
+            <div style={{ 
+                width: '100%', 
+                maxWidth: '400px', 
+                background: '#111', 
+                padding: '40px', 
+                borderRadius: '12px', 
+                border: '1px solid #222',
+                boxShadow: '0 20px 50px rgba(0,0,0,0.5)'
+            }}>
+                <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+                    <div style={{ 
+                        width: '50px', 
+                        height: '50px', 
+                        background: '#E8342A', 
+                        borderRadius: '10px', 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center',
+                        fontSize: '24px',
+                        fontWeight: '900',
+                        margin: '0 auto 15px'
+                    }}>K</div>
+                    <h2 style={{ letterSpacing: '4px', fontSize: '18px' }}>ADMIN ACCESS</h2>
+                    <p style={{ color: '#444', fontSize: '10px', marginTop: '5px' }}>SECURE COMMAND CENTER GATEWAY</p>
+                </div>
+
+                {error && (
+                    <div style={{ 
+                        background: 'rgba(232, 52, 42, 0.1)', 
+                        border: '1px solid #E8342A', 
+                        color: '#E8342A', 
+                        padding: '10px', 
+                        borderRadius: '6px', 
+                        fontSize: '12px', 
+                        marginBottom: '20px',
+                        textAlign: 'center'
+                    }}>{error}</div>
+                )}
+
+                <form onSubmit={handleSubmit}>
+                    <div style={{ marginBottom: '20px' }}>
+                        <label style={{ display: 'block', fontSize: '10px', color: '#888', marginBottom: '8px', textTransform: 'uppercase' }}>Operator ID</label>
+                        <input 
+                            type="text" 
+                            style={{ width: '100%', background: '#0A0A0A', border: '1px solid #222', padding: '12px', color: 'white', borderRadius: '6px', outline: 'none' }}
+                            value={credentials.username}
+                            onChange={(e) => setCredentials({...credentials, username: e.target.value})}
+                            required
+                        />
+                    </div>
+                    <div style={{ marginBottom: '30px' }}>
+                        <label style={{ display: 'block', fontSize: '10px', color: '#888', marginBottom: '8px', textTransform: 'uppercase' }}>Access Code</label>
+                        <input 
+                            type="password" 
+                            style={{ width: '100%', background: '#0A0A0A', border: '1px solid #222', padding: '12px', color: 'white', borderRadius: '6px', outline: 'none' }}
+                            value={credentials.password}
+                            onChange={(e) => setCredentials({...credentials, password: e.target.value})}
+                            required
+                        />
+                    </div>
+                    <button 
+                        type="submit" 
+                        disabled={loading}
+                        style={{ 
+                            width: '100%', 
+                            background: '#E8342A', 
+                            color: 'white', 
+                            border: 'none', 
+                            padding: '14px', 
+                            borderRadius: '6px', 
+                            fontWeight: '700', 
+                            cursor: 'pointer',
+                            opacity: loading ? 0.7 : 1
+                        }}
+                    >
+                        {loading ? 'AUTHENTICATING...' : 'INITIALIZE ACCESS'}
+                    </button>
+                </form>
+            </div>
         </div>
-
-        <form onSubmit={handleLogin} className="space-y-6">
-          <div className="relative">
-            <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary" />
-            <input 
-              type="text" 
-              placeholder="System Username"
-              className="w-full bg-black border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:border-accent-red focus:outline-none transition-all"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
-
-          <div className="relative">
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary" />
-            <input 
-              type="password" 
-              placeholder="Access Key"
-              className="w-full bg-black border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:border-accent-red focus:outline-none transition-all"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-
-          <button 
-            type="submit" 
-            className="w-full btn-primary py-4 rounded-xl text-lg font-bold"
-          >
-            INITIALIZE SESSION
-          </button>
-        </form>
-
-
-      </motion.div>
-    </div>
-  );
+    );
 };
 
 export default Login;
