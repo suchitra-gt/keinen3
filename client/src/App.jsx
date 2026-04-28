@@ -5,7 +5,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import About from './pages/About';
-import Services from './pages/Services';
+import Solutions from './pages/Solutions';
 import Industries from './pages/Industries';
 import WhyUs from './pages/WhyUs';
 import Contact from './pages/Contact';
@@ -28,8 +28,8 @@ const App = () => {
           <Routes location={location}>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
-            <Route path="/solutions" element={<Services />} />
-            <Route path="/services" element={<Services />} />
+            <Route path="/solutions" element={<Solutions />} />
+            <Route path="/services" element={<Solutions />} />
             <Route path="/industries" element={<Industries />} />
             <Route path="/why-us" element={<WhyUs />} />
             <Route path="/contact" element={<Contact />} />
