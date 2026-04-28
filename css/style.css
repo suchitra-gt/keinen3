@@ -742,7 +742,7 @@ body {
 section,
 main,
 .section-padding {
-    background: transparent !important;
+    background: transparent;
 }
 
 .sector-card,
@@ -832,10 +832,7 @@ body::before {
 
 /* --- Site Map Navigation Section --- */
 .site-map-section {
-    background: #2a2a2a !important;
-    padding: 40px 0;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    color: white;
+    display: none !important;
 }
 
 .map-container {
@@ -937,4 +934,199 @@ body::before {
         max-width: 500px;
         margin: 0 auto;
     }
+}
+
+/* --- Reviews Page --- */
+.reviews-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.review-form-card {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    margin-bottom: 60px;
+    border-top: 4px solid var(--primary-red);
+}
+
+.review-form-card h2 {
+    margin-bottom: 25px;
+    font-size: 2rem;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+    transition: var(--transition);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: var(--primary-red);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.1);
+}
+
+.star-rating-input {
+    display: flex;
+    gap: 10px;
+    font-size: 1.5rem;
+    color: #ddd;
+    cursor: pointer;
+}
+
+.star-rating-input .active {
+    color: #ffc107;
+    animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.message-banner {
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.message-banner.success {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.message-banner.error {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.message-banner.info {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.section-title {
+    font-size: 2.2rem;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    align-items: start;
+}
+
+.review-card {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+    transition: var(--transition);
+    border: 1px solid #eee;
+}
+
+.review-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+    border-color: rgba(229, 57, 53, 0.2);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.reviewer-info h4 {
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+}
+
+.review-date {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.star-display {
+    color: #ffc107;
+    font-size: 0.9rem;
+}
+
+.review-comment {
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Review Modal */
+.review-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.review-modal-content {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    max-width: 600px;
+    width: 100%;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.close-modal-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #888;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.close-modal-btn:hover {
+    color: var(--primary-red);
 }

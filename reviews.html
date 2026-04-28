@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- React and ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body>
     <div id="scroll-progress"></div>
@@ -79,17 +84,7 @@
         </section>
 
         <section class="section-padding">
-            <div class="container">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
-                    <div>
-                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800" alt="Client Trust" style="width: 100%; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
-                    </div>
-                    <div>
-                        <h2 style="margin-bottom: 1.5rem;">Dependable & <span style="color: var(--primary-red);">Efficient</span></h2>
-                        <p style="line-height: 1.8; color: var(--text-muted);">Our clients value our technical expertise, commitment to quality, and ability to handle complex infrastructure projects. We work closely with organizations to ensure their technology foundation is secure and scalable.</p>
-                    </div>
-                </div>
-            </div>
+            <div id="reviews-root"></div>
         </section>
     </main>
 
@@ -98,5 +93,295 @@
     </footer>
 
     <script src="js/main.js"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function App() {
+            const [reviews, setReviews] = useState([]);
+            const [form, setForm] = useState({ name: '', email: '', rating: 0, comment: '' });
+            const [isEditing, setIsEditing] = useState(false);
+            const [editId, setEditId] = useState(null);
+            const [message, setMessage] = useState({ text: '', type: '' });
+            const [loading, setLoading] = useState(false);
+            const [selectedReview, setSelectedReview] = useState(null);
+            const [likedReviews, setLikedReviews] = useState(() => JSON.parse(localStorage.getItem('likedReviews') || '{}'));
+
+            const handleLike = async (reviewId) => {
+                const isLiked = likedReviews[reviewId];
+                const action = isLiked ? 'unlike' : 'like';
+                
+                setLikedReviews(prev => {
+                    const newState = { ...prev, [reviewId]: !isLiked };
+                    localStorage.setItem('likedReviews', JSON.stringify(newState));
+                    return newState;
+                });
+
+                setReviews(prev => prev.map(r => {
+                    if (r.id === reviewId) {
+                        return { ...r, likes: Math.max(0, (r.likes || 0) + (isLiked ? -1 : 1)) };
+                    }
+                    return r;
+                }));
+
+                try {
+                    await fetch(`http://localhost:8050/api/reviews/${reviewId}/like`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action })
+                    });
+                } catch (error) {
+                    console.error('Error updating like:', error);
+                }
+            };
+
+            const fetchReviews = async () => {
+                try {
+                    const res = await fetch('http://localhost:8050/api/reviews');
+                    const data = await res.json();
+                    if (Array.isArray(data)) {
+                        setReviews(data);
+                    }
+                } catch (error) {
+                    console.error('Error fetching reviews:', error);
+                }
+            };
+
+            useEffect(() => {
+                fetchReviews();
+            }, []);
+
+            const handleEmailBlur = async (e) => {
+                const email = e.target.value;
+                if (!email) return;
+                try {
+                    const res = await fetch(`http://localhost:8050/api/reviews/${email}`);
+                    if (res.ok) {
+                        const existingReview = await res.json();
+                        setForm({
+                            name: existingReview.name,
+                            email: existingReview.email,
+                            rating: existingReview.rating,
+                            comment: existingReview.comment
+                        });
+                        setIsEditing(true);
+                        setEditId(existingReview.id);
+                        setMessage({ text: 'You already submitted a review. You can update it below.', type: 'info' });
+                    } else {
+                        if (isEditing) {
+                            setIsEditing(false);
+                            setEditId(null);
+                            setForm(prev => ({ ...prev, name: '', rating: 0, comment: '' }));
+                            setMessage({ text: '', type: '' });
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error checking email:', error);
+                }
+            };
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                if (form.rating === 0) {
+                    setMessage({ text: 'Please select a star rating before submitting.', type: 'error' });
+                    setTimeout(() => setMessage({ text: '', type: '' }), 5000);
+                    return;
+                }
+                setLoading(true);
+                try {
+                    const url = isEditing ? `http://localhost:8050/api/reviews/${editId}` : 'http://localhost:8050/api/reviews';
+                    const method = isEditing ? 'PUT' : 'POST';
+                    const res = await fetch(url, {
+                        method,
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(form)
+                    });
+                    const data = await res.json();
+                    
+                    if (res.ok) {
+                        setMessage({ text: isEditing ? 'Review updated successfully' : 'Review submitted successfully', type: 'success' });
+                        fetchReviews();
+                        if (!isEditing) {
+                            setForm({ name: '', email: '', rating: 0, comment: '' });
+                        }
+                    } else {
+                        setMessage({ text: data.error || 'An error occurred', type: 'error' });
+                        if (data.error === 'You have already submitted a review') {
+                            handleEmailBlur({ target: { value: form.email } });
+                        }
+                    }
+                } catch (error) {
+                    setMessage({ text: 'Network error occurred', type: 'error' });
+                }
+                setLoading(false);
+                setTimeout(() => setMessage({ text: '', type: '' }), 5000);
+            };
+
+            return (
+                <div className="reviews-container">
+                    {message.text && (
+                        <div className={`message-banner ${message.type}`}>
+                            {message.text}
+                        </div>
+                    )}
+                    
+                    <div className="review-form-card">
+                        <h2>{isEditing ? 'Update Your Review' : 'Submit a Review'}</h2>
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <label>Email Address</label>
+                                <input 
+                                    type="email" 
+                                    required 
+                                    value={form.email}
+                                    onChange={(e) => setForm({...form, email: e.target.value})}
+                                    onBlur={handleEmailBlur}
+                                    placeholder="Used to verify unique reviews"
+                                    disabled={isEditing}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Your Name</label>
+                                <input 
+                                    type="text" 
+                                    required 
+                                    value={form.name}
+                                    onChange={(e) => setForm({...form, name: e.target.value})}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Rating</label>
+                                <div className="star-rating-input">
+                                    {[1, 2, 3, 4, 5].map(star => (
+                                        <i 
+                                            key={star}
+                                            className={`fa-star ${star <= form.rating ? 'fas active' : 'far'}`}
+                                            onClick={() => setForm({...form, rating: star})}
+                                        ></i>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label>Your Experience</label>
+                                <textarea 
+                                    required 
+                                    rows="4"
+                                    value={form.comment}
+                                    onChange={(e) => setForm({...form, comment: e.target.value})}
+                                    placeholder="Tell us about your experience..."
+                                ></textarea>
+                            </div>
+                            <button type="submit" className="btn btn-red" disabled={loading}>
+                                {loading ? 'Processing...' : (isEditing ? 'Update Review' : 'Submit Review')}
+                            </button>
+                            {isEditing && (
+                                <button 
+                                    type="button" 
+                                    className="btn btn-secondary" 
+                                    style={{marginLeft: '10px', background: '#e0e0e0', color: '#333'}}
+                                    onClick={() => {
+                                        setIsEditing(false);
+                                        setEditId(null);
+                                        setForm({ name: '', email: '', rating: 0, comment: '' });
+                                        setMessage({ text: '', type: '' });
+                                    }}
+                                >
+                                    Cancel
+                                </button>
+                            )}
+                        </form>
+                    </div>
+
+                    <div className="reviews-list">
+                        <h3 className="section-title">Recent Client Experiences</h3>
+                        {reviews.length === 0 ? (
+                            <p style={{textAlign: 'center', color: '#888'}}>No reviews yet. Be the first to share your experience!</p>
+                        ) : (
+                            <div className="reviews-grid">
+                                {reviews.map(review => (
+                                    <div key={review.id} className="review-card">
+                                        <div className="review-header">
+                                            <div className="reviewer-info">
+                                                <h4>{review.name}</h4>
+                                                <span className="review-date">
+                                                    {new Date(review.created_at).toLocaleDateString()}
+                                                </span>
+                                            </div>
+                                            <div className="star-display">
+                                                {[1, 2, 3, 4, 5].map(star => (
+                                                    <i key={star} className={`fa-star ${star <= review.rating ? 'fas' : 'far'}`}></i>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <p className="review-comment">
+                                            {review.comment.length > 150 
+                                                ? review.comment.substring(0, 150) + '...' 
+                                                : review.comment}
+                                            {review.comment.length > 150 && (
+                                                <span 
+                                                    onClick={() => setSelectedReview(review)}
+                                                    style={{ color: 'var(--primary-red)', cursor: 'pointer', marginLeft: '8px', fontWeight: '600', fontSize: '0.9rem', display: 'inline-block' }}
+                                                >
+                                                    Read more
+                                                </span>
+                                            )}
+                                        </p>
+                                        <div style={{ marginTop: '15px', display: 'flex', justifyContent: 'flex-end', borderTop: '1px solid #eee', paddingTop: '10px' }}>
+                                            <button 
+                                                onClick={() => handleLike(review.id)}
+                                                style={{ 
+                                                    background: 'none', 
+                                                    border: 'none', 
+                                                    cursor: 'pointer', 
+                                                    display: 'flex', 
+                                                    alignItems: 'center', 
+                                                    gap: '6px',
+                                                    color: likedReviews[review.id] ? 'var(--primary-red)' : '#999',
+                                                    transition: 'all 0.2s',
+                                                    fontSize: '1.05rem'
+                                                }}
+                                            >
+                                                <i className={`${likedReviews[review.id] ? 'fas' : 'far'} fa-heart`} style={{ transform: likedReviews[review.id] ? 'scale(1.1)' : 'scale(1)' }}></i>
+                                                <span style={{ fontWeight: '500' }}>{review.likes || 0}</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    {selectedReview && (
+                        <div className="review-modal-overlay" onClick={() => setSelectedReview(null)}>
+                            <div className="review-modal-content" onClick={e => e.stopPropagation()}>
+                                <button className="close-modal-btn" onClick={() => setSelectedReview(null)}>
+                                    <i className="fas fa-times"></i>
+                                </button>
+                                <div className="review-header" style={{ marginBottom: '25px' }}>
+                                    <div className="reviewer-info">
+                                        <h3 style={{ margin: '0 0 5px 0', fontSize: '1.5rem' }}>{selectedReview.name}</h3>
+                                        <span className="review-date" style={{ fontSize: '0.95rem' }}>
+                                            {new Date(selectedReview.created_at).toLocaleDateString()}
+                                        </span>
+                                    </div>
+                                    <div className="star-display" style={{ fontSize: '1.2rem' }}>
+                                        {[1, 2, 3, 4, 5].map(star => (
+                                            <i key={star} className={`fa-star ${star <= selectedReview.rating ? 'fas' : 'far'}`}></i>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div style={{ fontSize: '1.1rem', lineHeight: '1.8', color: '#444', whiteSpace: 'pre-wrap' }}>
+                                    {selectedReview.comment}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('reviews-root'));
+        root.render(<App />);
+    </script>
 </body>
 </html>

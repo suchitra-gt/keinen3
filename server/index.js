@@ -43,6 +43,24 @@ const seedDatabase = () => {
         database: process.env.DB_NAME || 'keinen_db'
     });
 
+    const createReviewsTable = `
+        CREATE TABLE IF NOT EXISTS reviews (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            email VARCHAR(255) UNIQUE NOT NULL,
+            rating INT NOT NULL CHECK(rating >= 1 AND rating <= 5),
+            comment TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        )
+    `;
+    db.query(createReviewsTable, (err) => {
+        if (err) console.error("Error creating reviews table:", err);
+        else {
+            db.query("ALTER TABLE reviews ADD COLUMN likes INT DEFAULT 0", () => {});
+        }
+    });
+
     db.query('SHOW TABLES', (err, results) => {
         if (results.length === 0) {
             console.log('New database detected. Seeding industrial data...');
@@ -112,6 +130,66 @@ const startServer = () => {
             if (err) return res.status(500).json(err);
             res.json({ message: 'Success', id: result.insertId });
         });
+    });
+
+    // Reviews API
+    app.post('/api/reviews', (req, res) => {
+        const { name, email, rating, comment } = req.body;
+        if (!name || !email || !rating || !comment) return res.status(400).json({ error: 'All fields required' });
+        
+        db.query('SELECT id FROM reviews WHERE email = ?', [email], (err, results) => {
+            if (err) return res.status(500).json(err);
+            if (results.length > 0) return res.status(400).json({ error: 'You have already submitted a review' });
+            
+            db.query(
+                'INSERT INTO reviews (name, email, rating, comment) VALUES (?, ?, ?, ?)',
+                [name, email, rating, comment],
+                (err, result) => {
+                    if (err) return res.status(500).json(err);
+                    res.json({ message: 'Review submitted successfully', id: result.insertId });
+                }
+            );
+        });
+    });
+
+    app.get('/api/reviews', (req, res) => {
+        db.query('SELECT * FROM reviews ORDER BY created_at DESC', (err, results) => {
+            if (err) return res.status(500).json(err);
+            res.json(results);
+        });
+    });
+
+    app.get('/api/reviews/:email', (req, res) => {
+        db.query('SELECT * FROM reviews WHERE email = ?', [req.params.email], (err, results) => {
+            if (err) return res.status(500).json(err);
+            if (results.length === 0) return res.status(404).json({ error: 'Review not found' });
+            res.json(results[0]);
+        });
+    });
+
+    app.put('/api/reviews/:id', (req, res) => {
+        const { name, rating, comment } = req.body;
+        db.query(
+            'UPDATE reviews SET name = ?, rating = ?, comment = ? WHERE id = ?',
+            [name, rating, comment, req.params.id],
+            (err, result) => {
+                if (err) return res.status(500).json(err);
+                res.json({ message: 'Review updated successfully' });
+            }
+        );
+    });
+
+    app.put('/api/reviews/:id/like', (req, res) => {
+        const { action } = req.body;
+        const operator = action === 'like' ? '+' : '-';
+        db.query(
+            `UPDATE reviews SET likes = GREATEST(0, likes ${operator} 1) WHERE id = ?`,
+            [req.params.id],
+            (err, result) => {
+                if (err) return res.status(500).json(err);
+                res.json({ message: `Review ${action}d successfully` });
+            }
+        );
     });
 
     // Fallback for SPA (React) if running from server
