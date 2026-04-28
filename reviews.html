@@ -17,7 +17,7 @@
     <div id="scroll-progress"></div>
 
     <header id="main-header">
-        <div class="container">
+        <div class="container" data-aos="fade-up">
             <nav>
                 <a href="index.html" class="logo"><img src="logo.png" alt="Keinen Corp"></a>
                 
@@ -81,8 +81,8 @@
     </header>
 
     <main>
-        <section class="hero-section" style="background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=1920'); background-size: cover; background-position: center; padding: 180px 0 100px; text-align: center;">
-            <div class="container">
+        <section class="hero-section" style="background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('insights_bg.png'); background-size: cover; background-position: center; padding: 180px 0 100px; text-align: center;">
+            <div class="container" data-aos="fade-up">
                 <h4 style="color: var(--primary-red); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem;">Reviews</h4>
                 <h1 style="font-size: 3.5rem; color: white; margin-bottom: 1.5rem;">Client <span style="color: var(--primary-red);">Experiences</span></h1>
                 <p style="font-size: 1.1rem; color: rgba(255,255,255,0.8); max-width: 800px; margin: 0 auto;">Keinen has built a reputation for delivering dependable and efficient IT-OT solutions.</p>
@@ -94,8 +94,72 @@
         </section>
     </main>
 
-    <footer style="background: var(--bg-dark); color: white; padding: 40px 0; text-align: center;">
-        <p>&copy; 2026 Keinen Corp.</p>
+        <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="index.html" class="footer-logo"><img src="logo.png" alt="Keinen Corp" style="height: 90px;"></a>
+                    <p>Architecting the digital ecosystems of tomorrow. We specialize in enterprise IT, OT, security, and digital transformation.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Solutions</h4>
+                    <ul>
+                        <li class="has-mega-menu"><a href="solutions.html" id="solutions-nav-link">Solutions <i class="fas fa-chevron-down" style="font-size: 0.6rem; margin-left: 5px;"></i></a>
+                            <div class="mega-menu-dropdown">
+                                <div class="mega-col">
+                                    <h5>OUR SERVICES</h5>
+                                    <ul class="service-list">
+                                        <li class="service-item active" data-category="cyber"><i class="fas fa-shield-alt"></i> Cybersecurity <i class="fas fa-chevron-right" style="margin-left:auto;font-size:0.7rem"></i></li>
+                                        <li class="service-item" data-category="data"><i class="fas fa-brain"></i> Data & AI Services <i class="fas fa-chevron-right" style="margin-left:auto;font-size:0.7rem"></i></li>
+                                        <li class="service-item" data-category="digital"><i class="fas fa-rocket"></i> Digital Transformation <i class="fas fa-chevron-right" style="margin-left:auto;font-size:0.7rem"></i></li>
+                                        <li class="service-item" data-category="enterprise"><i class="fas fa-cogs"></i> Enterprise Applications <i class="fas fa-chevron-right" style="margin-left:auto;font-size:0.7rem"></i></li>
+                                        <li class="service-item" data-category="workforce"><i class="fas fa-users"></i> IT Workforce Solutions <i class="fas fa-chevron-right" style="margin-left:auto;font-size:0.7rem"></i></li>
+                                    </ul>
+                                </div>
+                                <div class="mega-col">
+                                    <h5>SUB SERVICES</h5>
+                                    <ul class="sub-service-list" id="sub-service-list">
+                                        <!-- Dynamically populated by JS -->
+                                    </ul>
+                                </div>
+                                <div class="mega-col" style="border-right:none">
+                                    <h5>RECOMMENDED SOLUTIONS</h5>
+                                    <div id="solution-list">
+                                        <!-- Dynamically populated by JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="solutions.html">Digital Transformation</a></li>
+                        <li><a href="solutions.html">Enterprise Apps</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="industries.html">Industries</a></li>
+                        <li><a href="why-us.html">Why Keinen</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="newsletter">
+                    <h4>Stay Ahead</h4>
+                    <p>Get insights on the latest in enterprise technology.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Email Address">
+                        <button type="submit" class="btn btn-red" style="padding: 12px 20px;"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="bottom-footer">
+                <p>&copy; 2026 Keinen Corp. All rights reserved.</p>
+                <div style="display: flex; gap: 20px;">
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <script src="js/main.js"></script>
