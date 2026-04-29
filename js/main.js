@@ -304,4 +304,33 @@ window.onclick = function(event) {
 
 window.addEventListener('DOMContentLoaded', () => {
     fetchDynamicContent();
+    
+    // Dynamic Mobile Hamburger Menu
+    const nav = document.querySelector('header nav');
+    if (nav && !document.querySelector('.mobile-menu-btn')) {
+        const btnContainer = document.createElement('div');
+        btnContainer.className = 'mobile-menu-btn-container';
+        btnContainer.innerHTML = '<button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>';
+        
+        const logo = nav.querySelector('.logo');
+        if (logo) {
+            logo.after(btnContainer);
+        } else {
+            nav.prepend(btnContainer);
+        }
+
+        const btn = btnContainer.querySelector('.mobile-menu-btn');
+        const navWrapper = nav.querySelector('.nav-wrapper');
+        
+        if (btn && navWrapper) {
+            btn.addEventListener('click', () => {
+                navWrapper.classList.toggle('nav-active');
+                if (navWrapper.classList.contains('nav-active')) {
+                    btn.innerHTML = '<i class="fas fa-times"></i>';
+                } else {
+                    btn.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            });
+        }
+    }
 });
